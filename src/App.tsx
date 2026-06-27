@@ -28,7 +28,7 @@ function App() {
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
               />
-              <main className="flex-1 h-screen overflow-y-auto relative">
+              <main className="flex-1 h-screen overflow-y-auto relative scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background">
                 <div className="fixed right-0 mr-12.5 mt-12.5">
                   <ThemeToggle />
                 </div>

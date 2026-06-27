@@ -33,7 +33,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   });
 
   return (
-    <aside className="w-80 h-screen border-r bg-sidebar flex flex-col hidden md:flex shrink-0">
+    <aside className="w-80 h-screen border-r bg-sidebar flex-col hidden md:flex shrink-0 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-sidebar">
       <div className="p-6 border-b flex-shrink-0">
         <Link href="/" className="flex items-center gap-2 mb-6">
           <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground font-bold">
