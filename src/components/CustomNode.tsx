@@ -1,6 +1,6 @@
 import { Handle, Position } from "reactflow";
 import * as LucideIcons from "lucide-react";
-import { type ArchitectureNode } from "../data/architectures";
+import { type ArchitectureNode } from "@/data/architectures";
 
 const nodeColors: Record<
   string,

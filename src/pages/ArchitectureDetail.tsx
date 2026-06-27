@@ -1,14 +1,14 @@
-import React from 'react';
-import { useParams, Link } from 'wouter';
-import { ArrowLeft, CheckCircle2, List, Target } from 'lucide-react';
-import { architectures } from '../data/architectures';
-import { DiagramCanvas } from '../components/DiagramCanvas';
-import { Badge } from '../components/ui/badge';
-import { Button } from '../components/ui/button';
+import React from "react";
+import { useParams, Link } from "wouter";
+import { ArrowLeft, CheckCircle2, List, Target } from "lucide-react";
+import { architectures } from "../data/architectures";
+import { DiagramCanvas } from "../components/DiagramCanvas";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
 
 export const ArchitectureDetail: React.FC = () => {
   const params = useParams<{ id: string }>();
-  const architecture = architectures.find(a => a.id === params.id);
+  const architecture = architectures.find((a) => a.id === params.id);
 
   if (!architecture) {
     return (
@@ -31,10 +31,14 @@ export const ArchitectureDetail: React.FC = () => {
         </Link>
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight">{architecture.title}</h1>
+            <h1 className="text-2xl font-bold tracking-tight">
+              {architecture.title}
+            </h1>
             <Badge>{architecture.category}</Badge>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">{architecture.shortDescription}</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {architecture.shortDescription}
+          </p>
         </div>
       </header>
 
@@ -59,7 +63,10 @@ export const ArchitectureDetail: React.FC = () => {
               </div>
               <ul className="space-y-3">
                 {architecture.keyComponents.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-sm text-muted-foreground"
+                  >
                     <div className="h-1.5 w-1.5 rounded-full bg-primary/50 mt-1.5 shrink-0" />
                     <span>{item}</span>
                   </li>
@@ -75,7 +82,10 @@ export const ArchitectureDetail: React.FC = () => {
               </div>
               <ul className="space-y-3">
                 {architecture.benefits.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-sm text-muted-foreground"
+                  >
                     <div className="h-1.5 w-1.5 rounded-full bg-emerald-500/50 mt-1.5 shrink-0" />
                     <span>{item}</span>
                   </li>
@@ -91,7 +101,10 @@ export const ArchitectureDetail: React.FC = () => {
               </div>
               <ul className="space-y-3">
                 {architecture.useCases.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-sm text-muted-foreground"
+                  >
                     <div className="h-1.5 w-1.5 rounded-full bg-blue-500/50 mt-1.5 shrink-0" />
                     <span>{item}</span>
                   </li>

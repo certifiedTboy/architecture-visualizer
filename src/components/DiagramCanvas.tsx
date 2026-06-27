@@ -6,8 +6,8 @@ import ReactFlow, {
   MarkerType,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import { CustomNode } from "./CustomNode";
-import { type Architecture } from "../data/architectures";
+import { CustomNode } from "@/components/CustomNode";
+import { type Architecture } from "@/data/architectures";
 import { useTheme } from "next-themes";
 
 interface DiagramCanvasProps {
