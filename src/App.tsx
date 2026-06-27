@@ -49,3 +49,28 @@ function App() {
 }
 
 export default App;
+
+// import { Link, Route, Switch } from "wouter";
+// import { Toaster } from "@/components/ui/toaster";
+// import { ThemeProvider } from "@/components/theme-provider";
+// import { ThemeToggle } from "./components/theme-toggle";
+
+// function App() {
+//   return (
+//     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+//       <header className="border-b py-4 px-6 flex items-center">
+//         <h1 className="text-xl font-bold">
+//           <Link to="/">Architecture Visualizer</Link>
+//         </h1>
+//         <div className="ml-auto">
+//           <ThemeToggle />
+//         </div>
+//       </header>
+//       <main>
+//         <Toaster />
+//       </main>
+//     </ThemeProvider>
+//   );
+// }
+
+// export default App;
