@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link, useLocation } from 'wouter';
-import { Search } from 'lucide-react';
-import { architectures } from '../data/architectures';
-import { Input } from './ui/input';
-import { Badge } from './ui/badge';
+import React from "react";
+import { Link, useLocation } from "wouter";
+import { Search } from "lucide-react";
+import { architectures } from "../data/architectures";
+import { Input } from "./ui/input";
+import { Badge } from "./ui/badge";
 
 interface SidebarProps {
   searchQuery: string;
@@ -12,20 +12,23 @@ interface SidebarProps {
   setSelectedCategory: (val: string | null) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  searchQuery, 
-  setSearchQuery, 
-  selectedCategory, 
-  setSelectedCategory 
+export const Sidebar: React.FC<SidebarProps> = ({
+  searchQuery,
+  setSearchQuery,
+  selectedCategory,
+  setSelectedCategory,
 }) => {
   const [location] = useLocation();
 
-  const categories = Array.from(new Set(architectures.map(a => a.category)));
+  const categories = Array.from(new Set(architectures.map((a) => a.category)));
 
-  const filteredArchitectures = architectures.filter(a => {
-    const matchesSearch = a.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          a.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory ? a.category === selectedCategory : true;
+  const filteredArchitectures = architectures.filter((a) => {
+    const matchesSearch =
+      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      a.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory
+      ? a.category === selectedCategory
+      : true;
     return matchesSearch && matchesCategory;
   });
 
@@ -36,13 +39,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground font-bold">
             AV
           </div>
-          <span className="font-bold text-lg tracking-tight">Architecture Visualizer</span>
+          <span className="font-bold text-lg tracking-tight">
+            Architecture Visualizer
+          </span>
         </Link>
 
         <div className="relative mb-4">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Search architectures..." 
+          <Input
+            placeholder="Search architectures..."
             className="pl-9 bg-background"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -51,7 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Badge 
+          <Badge
             variant={selectedCategory === null ? "default" : "outline"}
             className="cursor-pointer"
             onClick={() => setSelectedCategory(null)}
@@ -59,8 +64,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             All
           </Badge>
-          {categories.map(cat => (
-            <Badge 
+          {categories.map((cat) => (
+            <Badge
               key={cat}
               variant={selectedCategory === cat ? "default" : "outline"}
               className="cursor-pointer"
@@ -74,21 +79,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        {filteredArchitectures.map(arch => {
+        {filteredArchitectures.map((arch) => {
           const isActive = location === `/architecture/${arch.id}`;
           return (
-            <Link 
-              key={arch.id} 
+            <Link
+              key={arch.id}
               href={`/architecture/${arch.id}`}
               className={`block p-3 rounded-md transition-colors ${
-                isActive 
-                  ? 'bg-primary/10 border-primary/20 border' 
-                  : 'hover:bg-muted border border-transparent'
+                isActive
+                  ? "bg-primary/10 border-primary/20 border"
+                  : "hover:bg-muted border border-transparent"
               }`}
               data-testid={`link-sidebar-${arch.id}`}
             >
               <div className="flex items-center justify-between mb-1">
-                <h3 className={`text-sm font-medium ${isActive ? 'text-primary' : 'text-foreground'}`}>
+                <h3
+                  className={`text-sm font-medium ${isActive ? "text-primary" : "text-foreground"}`}
+                >
                   {arch.title}
                 </h3>
               </div>
@@ -98,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </Link>
           );
         })}
-        
+
         {filteredArchitectures.length === 0 && (
           <div className="text-center p-4 text-sm text-muted-foreground">
             No architectures found.

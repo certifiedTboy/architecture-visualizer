@@ -3,7 +3,9 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "./components/ui/toaster";
 import { TooltipProvider } from "./components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 import NotFound from "./pages/not-found";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Home } from "./pages/Home";
 import { ArchitectureDetail } from "./pages/ArchitectureDetail";
 import { Sidebar } from "./components/Sidebar";
@@ -16,61 +18,41 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <div className="flex h-screen bg-background text-foreground overflow-hidden">
-            <Sidebar
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-            />
-            <main className="flex-1 h-screen overflow-y-auto relative">
-              <Switch>
-                <Route path="/">
-                  <Home
-                    searchQuery={searchQuery}
-                    selectedCategory={selectedCategory}
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <TooltipProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <div className="flex h-screen bg-background text-foreground overflow-hidden">
+              <Sidebar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+              />
+              <main className="flex-1 h-screen overflow-y-auto relative">
+                <div className="fixed right-0 mr-12.5 mt-12.5">
+                  <ThemeToggle />
+                </div>
+                <Switch>
+                  <Route path="/">
+                    <Home
+                      searchQuery={searchQuery}
+                      selectedCategory={selectedCategory}
+                    />
+                  </Route>
+                  <Route
+                    path="/architecture/:id"
+                    component={ArchitectureDetail}
                   />
-                </Route>
-                <Route
-                  path="/architecture/:id"
-                  component={ArchitectureDetail}
-                />
-                <Route component={NotFound} />
-              </Switch>
-            </main>
-          </div>
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
+                  <Route component={NotFound} />
+                </Switch>
+              </main>
+            </div>
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
 
 export default App;
-
-// import { Link, Route, Switch } from "wouter";
-// import { Toaster } from "@/components/ui/toaster";
-// import { ThemeProvider } from "@/components/theme-provider";
-// import { ThemeToggle } from "./components/theme-toggle";
-
-// function App() {
-//   return (
-//     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-//       <header className="border-b py-4 px-6 flex items-center">
-//         <h1 className="text-xl font-bold">
-//           <Link to="/">Architecture Visualizer</Link>
-//         </h1>
-//         <div className="ml-auto">
-//           <ThemeToggle />
-//         </div>
-//       </header>
-//       <main>
-//         <Toaster />
-//       </main>
-//     </ThemeProvider>
-//   );
-// }
-
-// export default App;

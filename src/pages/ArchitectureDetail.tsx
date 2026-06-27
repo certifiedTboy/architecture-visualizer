@@ -3,6 +3,7 @@ import { useParams, Link } from "wouter";
 import { ArrowLeft, CheckCircle2, List, Target } from "lucide-react";
 import { architectures } from "../data/architectures";
 import { DiagramCanvas } from "../components/DiagramCanvas";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 
@@ -39,6 +40,10 @@ export const ArchitectureDetail: React.FC = () => {
           <p className="text-sm text-muted-foreground mt-1">
             {architecture.shortDescription}
           </p>
+        </div>
+
+        <div className="flex-1 flex justify-end">
+          <ThemeToggle />
         </div>
       </header>
 
