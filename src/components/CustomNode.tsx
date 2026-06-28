@@ -1,6 +1,8 @@
 import { Handle, Position } from "reactflow";
 import * as LucideIcons from "lucide-react";
 import { type ArchitectureNode } from "@/data/architectures";
+import { TechnologyPopover } from "./TechnologyPopover";
+import { cn } from "@/lib/utils";
 
 const nodeColors: Record<
   string,
@@ -95,49 +97,64 @@ export const CustomNode = ({ data }: { data: ArchitectureNode["data"] }) => {
   const type = data.nodeType || "default";
   const colors = nodeColors[type] || nodeColors.default;
 
+  // const hasTechnologies = data.technologies && data.technologies.length > 0;
+
+  const hasTechnologies = true;
+
   return (
-    <div
-      className={`px-4 py-3 shadow-md rounded-lg border-2 ${colors.bg} ${colors.border} flex flex-col items-center justify-center min-w-[140px]`}
-    >
-      <Handle
-        type="target"
-        position={Position.Left}
-        className="w-2 h-2 !bg-gray-400 border-none"
-      />
-      <Handle
-        type="target"
-        position={Position.Top}
-        className="w-2 h-2 !bg-gray-400 border-none"
-        id="top"
-      />
+    <TechnologyPopover technologies={data.technologies || []}>
+      <div
+        className={cn(
+          "px-4 py-3 shadow-md rounded-lg border-2 flex flex-col items-center justify-center min-w-[140px] transition-all",
+          colors.bg,
+          colors.border,
+          hasTechnologies &&
+            "cursor-pointer hover:shadow-lg hover:border-primary/50",
+        )}
+      >
+        <Handle
+          type="target"
+          position={Position.Left}
+          className="w-2 h-2 !bg-gray-400 border-none"
+        />
+        <Handle
+          type="target"
+          position={Position.Top}
+          className="w-2 h-2 !bg-gray-400 border-none"
+          id="top"
+        />
 
-      <div className={`mb-2 ${colors.icon}`}>
-        <IconComponent size={24} strokeWidth={1.5} />
-      </div>
-
-      <div className={`font-semibold text-sm text-center ${colors.text}`}>
-        {data.label}
-      </div>
-
-      {data.nodeType && (
-        <div
-          className={`mt-1 text-[10px] uppercase tracking-wider opacity-70 font-mono ${colors.text}`}
-        >
-          {data.nodeType}
+        <div className={cn("mb-2", colors.icon)}>
+          <IconComponent size={24} strokeWidth={1.5} />
         </div>
-      )}
 
-      <Handle
-        type="source"
-        position={Position.Right}
-        className="w-2 h-2 !bg-gray-400 border-none"
-      />
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        className="w-2 h-2 !bg-gray-400 border-none"
-        id="bottom"
-      />
-    </div>
+        <div className={cn("font-semibold text-sm text-center", colors.text)}>
+          {data.label}
+        </div>
+
+        {data.nodeType && (
+          <div
+            className={cn(
+              "mt-1 text-[10px] uppercase tracking-wider opacity-70 font-mono",
+              colors.text,
+            )}
+          >
+            {data.nodeType}
+          </div>
+        )}
+
+        <Handle
+          type="source"
+          position={Position.Right}
+          className="w-2 h-2 !bg-gray-400 border-none"
+        />
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          className="w-2 h-2 !bg-gray-400 border-none"
+          id="bottom"
+        />
+      </div>
+    </TechnologyPopover>
   );
 };
