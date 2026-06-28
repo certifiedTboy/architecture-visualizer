@@ -8,7 +8,7 @@ import NotFound from "./pages/not-found";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Home } from "./pages/Home";
 import { ArchitectureDetail } from "./pages/ArchitectureDetail";
-import { Sidebar } from "./components/Sidebar";
+import { AppLayout } from "@/components/AppLayout";
 
 const queryClient = new QueryClient();
 
@@ -21,32 +21,33 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <TooltipProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <div className="flex h-screen bg-background text-foreground overflow-hidden">
-              <Sidebar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-              />
-              <main className="flex-1 h-screen overflow-y-auto relative scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background">
-                <div className="fixed right-0 mr-12.5 mt-12.5">
-                  <ThemeToggle />
-                </div>
-                <Switch>
-                  <Route path="/">
-                    <Home
-                      searchQuery={searchQuery}
-                      selectedCategory={selectedCategory}
+            <AppLayout
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            >
+              <div className="flex h-screen bg-background text-foreground overflow-hidden">
+                <main className="flex-1 h-screen overflow-y-auto relative scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background">
+                  <div className="fixed right-0 mr-12.5 mt-12.5">
+                    <ThemeToggle />
+                  </div>
+                  <Switch>
+                    <Route path="/">
+                      <Home
+                        searchQuery={searchQuery}
+                        selectedCategory={selectedCategory}
+                      />
+                    </Route>
+                    <Route
+                      path="/architecture/:id"
+                      component={ArchitectureDetail}
                     />
-                  </Route>
-                  <Route
-                    path="/architecture/:id"
-                    component={ArchitectureDetail}
-                  />
-                  <Route component={NotFound} />
-                </Switch>
-              </main>
-            </div>
+                    <Route component={NotFound} />
+                  </Switch>
+                </main>
+              </div>
+            </AppLayout>
           </WouterRouter>
           <Toaster />
         </TooltipProvider>
