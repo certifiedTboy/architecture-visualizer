@@ -1,36 +1,26 @@
-export interface Architecture {
-  id: string;
-  title: string;
-  category: string;
-  shortDescription: string;
-  description: string;
-  keyComponents: string[];
-  benefits: string[];
-  useCases: string[];
-  nodes: ArchitectureNode[];
-  edges: ArchitectureEdge[];
-}
+import { technologyResources } from "./technology-resources";
+import type { Architecture } from "./types";
 
-export interface ArchitectureNode {
-  id: string;
-  type: string;
-  position: { x: number; y: number };
-  data: {
-    label: string;
-    icon: string;
-    nodeType: string;
-    technologies?: string[];
-  };
-}
+const getTechnologyUrl = (name: string): string => {
+  if (technologyResources[name]) return technologyResources[name];
 
-export interface ArchitectureEdge {
-  id: string;
-  source: string;
-  target: string;
-  animated?: boolean;
-  label?: string;
-  type?: string;
-}
+  const normalizedName = name
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s*\/.*$/g, "")
+    .trim();
+
+  if (technologyResources[normalizedName])
+    return technologyResources[normalizedName];
+
+  return `https://www.google.com/search?q=${encodeURIComponent(`${name} official documentation tutorial`)}`;
+};
+
+const tech = (...names: string[]): { name: string; url: string }[] =>
+  names.map((name) => ({
+    name,
+    url: getTechnologyUrl(name),
+  }));
+
 export const architectures: Architecture[] = [
   {
     id: "three-tier-web",
@@ -64,7 +54,13 @@ export const architectures: Architecture[] = [
           label: "Client Browser",
           icon: "laptop",
           nodeType: "client",
-          technologies: ["React", "Angular", "Vue.js", "Svelte", "HTML/CSS"],
+          technologies: tech(
+            "React",
+            "Angular",
+            "Vue.js",
+            "Svelte",
+            "HTML/CSS",
+          ),
         },
       },
       {
@@ -75,7 +71,7 @@ export const architectures: Architecture[] = [
           label: "Mobile App",
           icon: "smartphone",
           nodeType: "client",
-          technologies: ["Swift (iOS)", "Kotlin (Android)", "React Native"],
+          technologies: tech("Swift (iOS)", "Kotlin (Android)", "React Native"),
         },
       },
       {
@@ -86,12 +82,12 @@ export const architectures: Architecture[] = [
           label: "Load Balancer",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: [
+          technologies: tech(
             "AWS ELB/ALB",
             "Google Cloud Load Balancing",
             "Nginx",
             "HAProxy",
-          ],
+          ),
         },
       },
       {
@@ -102,7 +98,7 @@ export const architectures: Architecture[] = [
           label: "Web Server 1",
           icon: "server",
           nodeType: "server",
-          technologies: ["Nginx", "Apache HTTP Server", "Caddy", "HAProxy"],
+          technologies: tech("Nginx", "Apache HTTP Server", "Caddy", "HAProxy"),
         },
       },
       {
@@ -113,7 +109,7 @@ export const architectures: Architecture[] = [
           label: "Web Server 2",
           icon: "server",
           nodeType: "server",
-          technologies: ["Nginx", "Apache HTTP Server", "Caddy", "HAProxy"],
+          technologies: tech("Nginx", "Apache HTTP Server", "Caddy", "HAProxy"),
         },
       },
       {
@@ -124,7 +120,7 @@ export const architectures: Architecture[] = [
           label: "Web Server 3",
           icon: "server",
           nodeType: "server",
-          technologies: ["Nginx", "Apache HTTP Server", "Caddy", "HAProxy"],
+          technologies: tech("Nginx", "Apache HTTP Server", "Caddy", "HAProxy"),
         },
       },
       {
@@ -135,14 +131,14 @@ export const architectures: Architecture[] = [
           label: "App Server 1",
           icon: "cpu",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "Node.js (Express, NestJS)",
             "Python (Django, Flask)",
             "Java (Spring Boot)",
             "Go (Gin)",
             "Ruby (Rails)",
             ".NET (ASP.NET Core)",
-          ],
+          ),
         },
       },
       {
@@ -153,11 +149,11 @@ export const architectures: Architecture[] = [
           label: "App Server 2",
           icon: "cpu",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "Node.js (Express, NestJS)",
             "Python (Django, Flask)",
             "Java (Spring Boot)",
-          ],
+          ),
         },
       },
       {
@@ -168,13 +164,13 @@ export const architectures: Architecture[] = [
           label: "Primary DB",
           icon: "database",
           nodeType: "database",
-          technologies: [
+          technologies: tech(
             "PostgreSQL",
             "MySQL",
             "MariaDB",
             "Oracle",
             "SQL Server",
-          ],
+          ),
         },
       },
       {
@@ -185,7 +181,7 @@ export const architectures: Architecture[] = [
           label: "Read Replica",
           icon: "database",
           nodeType: "database",
-          technologies: ["PostgreSQL", "MySQL", "MariaDB"],
+          technologies: tech("PostgreSQL", "MySQL", "MariaDB"),
         },
       },
       {
@@ -196,7 +192,7 @@ export const architectures: Architecture[] = [
           label: "Redis Cache",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Memcached"],
+          technologies: tech("Redis", "Memcached"),
         },
       },
     ],
@@ -263,7 +259,7 @@ export const architectures: Architecture[] = [
           label: "API Gateway",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["AWS API Gateway", "Kong", "Tyk", "Apigee"],
+          technologies: tech("AWS API Gateway", "Kong", "Tyk", "Apigee"),
         },
       },
       {
@@ -274,7 +270,7 @@ export const architectures: Architecture[] = [
           label: "Auth Service",
           icon: "shield",
           nodeType: "server",
-          technologies: ["Keycloak", "Auth0", "Okta", "JWT", "OAuth2"],
+          technologies: tech("Keycloak", "Auth0", "Okta", "JWT", "OAuth2"),
         },
       },
       {
@@ -285,7 +281,7 @@ export const architectures: Architecture[] = [
           label: "User Service",
           icon: "users",
           nodeType: "server",
-          technologies: ["Go", "Node.js", "Python (Flask)"],
+          technologies: tech("Go", "Node.js", "Python (Flask)"),
         },
       },
       {
@@ -296,7 +292,7 @@ export const architectures: Architecture[] = [
           label: "Order Service",
           icon: "shopping-cart",
           nodeType: "server",
-          technologies: ["Java (Spring Boot)", "C# (.NET)"],
+          technologies: tech("Java (Spring Boot)", "C# (.NET)"),
         },
       },
       {
@@ -307,7 +303,7 @@ export const architectures: Architecture[] = [
           label: "Payment Service",
           icon: "credit-card",
           nodeType: "server",
-          technologies: ["Java", "Go", "Stripe API", "Adyen"],
+          technologies: tech("Java", "Go", "Stripe API", "Adyen"),
         },
       },
       {
@@ -318,7 +314,7 @@ export const architectures: Architecture[] = [
           label: "User DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["PostgreSQL", "MongoDB"],
+          technologies: tech("PostgreSQL", "MongoDB"),
         },
       },
       {
@@ -329,7 +325,7 @@ export const architectures: Architecture[] = [
           label: "Order DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["MySQL", "Amazon Aurora"],
+          technologies: tech("MySQL", "Amazon Aurora"),
         },
       },
       {
@@ -340,7 +336,7 @@ export const architectures: Architecture[] = [
           label: "Payment DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["PostgreSQL", "Cassandra"],
+          technologies: tech("PostgreSQL", "Cassandra"),
         },
       },
       {
@@ -351,7 +347,7 @@ export const architectures: Architecture[] = [
           label: "Message Broker",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["Apache Kafka", "RabbitMQ", "AWS SQS/SNS"],
+          technologies: tech("Apache Kafka", "RabbitMQ", "AWS SQS/SNS"),
         },
       },
       {
@@ -362,7 +358,7 @@ export const architectures: Architecture[] = [
           label: "Notification Service",
           icon: "bell",
           nodeType: "server",
-          technologies: ["Twilio", "SendGrid", "Firebase Cloud Messaging"],
+          technologies: tech("Twilio", "SendGrid", "Firebase Cloud Messaging"),
         },
       },
     ],
@@ -431,7 +427,12 @@ export const architectures: Architecture[] = [
           label: "CDN",
           icon: "globe",
           nodeType: "cdn",
-          technologies: ["AWS CloudFront", "Cloudflare", "Fastly", "Akamai"],
+          technologies: tech(
+            "AWS CloudFront",
+            "Cloudflare",
+            "Fastly",
+            "Akamai",
+          ),
         },
       },
       {
@@ -442,11 +443,11 @@ export const architectures: Architecture[] = [
           label: "API Gateway",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: [
+          technologies: tech(
             "AWS API Gateway",
             "Azure API Management",
             "Google Cloud Endpoints",
-          ],
+          ),
         },
       },
       {
@@ -457,11 +458,11 @@ export const architectures: Architecture[] = [
           label: "GetData Function",
           icon: "braces",
           nodeType: "function",
-          technologies: [
+          technologies: tech(
             "AWS Lambda",
             "Azure Functions",
             "Google Cloud Functions",
-          ],
+          ),
         },
       },
       {
@@ -472,7 +473,7 @@ export const architectures: Architecture[] = [
           label: "ProcessData Function",
           icon: "braces",
           nodeType: "function",
-          technologies: ["Node.js", "Python", "Go"],
+          technologies: tech("Node.js", "Python", "Go"),
         },
       },
       {
@@ -483,7 +484,7 @@ export const architectures: Architecture[] = [
           label: "Auth Function",
           icon: "braces",
           nodeType: "function",
-          technologies: ["Amazon Cognito", "Auth0", "Okta"],
+          technologies: tech("Amazon Cognito", "Auth0", "Okta"),
         },
       },
       {
@@ -494,12 +495,12 @@ export const architectures: Architecture[] = [
           label: "NoSQL DB",
           icon: "database",
           nodeType: "database",
-          technologies: [
+          technologies: tech(
             "Amazon DynamoDB",
             "Azure Cosmos DB",
             "Google Firestore",
             "MongoDB Atlas",
-          ],
+          ),
         },
       },
       {
@@ -510,11 +511,11 @@ export const architectures: Architecture[] = [
           label: "Object Storage",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: [
+          technologies: tech(
             "Amazon S3",
             "Azure Blob Storage",
             "Google Cloud Storage",
-          ],
+          ),
         },
       },
     ],
@@ -585,12 +586,12 @@ export const architectures: Architecture[] = [
           label: "Event Broker (Kafka)",
           icon: "layers",
           nodeType: "queue",
-          technologies: [
+          technologies: tech(
             "Apache Kafka",
             "RabbitMQ",
             "AWS Kinesis",
             "Google Pub/Sub",
-          ],
+          ),
         },
       },
       {
@@ -601,11 +602,11 @@ export const architectures: Architecture[] = [
           label: "Analytics Service",
           icon: "bar-chart",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "Apache Spark",
             "Apache Flink",
             "AWS Kinesis Analytics",
-          ],
+          ),
         },
       },
       {
@@ -616,7 +617,7 @@ export const architectures: Architecture[] = [
           label: "Archival Service",
           icon: "archive",
           nodeType: "server",
-          technologies: ["AWS Glue", "Custom Scripts"],
+          technologies: tech("AWS Glue", "Custom Scripts"),
         },
       },
       {
@@ -633,7 +634,7 @@ export const architectures: Architecture[] = [
           label: "Data Warehouse",
           icon: "database",
           nodeType: "database",
-          technologies: ["Amazon Redshift", "Google BigQuery", "Snowflake"],
+          technologies: tech("Amazon Redshift", "Google BigQuery", "Snowflake"),
         },
       },
       {
@@ -644,7 +645,7 @@ export const architectures: Architecture[] = [
           label: "Cold Storage",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3 Glacier", "Azure Archive Storage"],
+          technologies: tech("Amazon S3 Glacier", "Azure Archive Storage"),
         },
       },
     ],
@@ -697,7 +698,7 @@ export const architectures: Architecture[] = [
           label: "Git Repository",
           icon: "git-branch",
           nodeType: "storage",
-          technologies: ["GitHub", "GitLab", "Bitbucket", "AWS CodeCommit"],
+          technologies: tech("GitHub", "GitLab", "Bitbucket", "AWS CodeCommit"),
         },
       },
       {
@@ -708,7 +709,12 @@ export const architectures: Architecture[] = [
           label: "CI Server",
           icon: "refresh-cw",
           nodeType: "server",
-          technologies: ["Jenkins", "GitLab CI", "GitHub Actions", "CircleCI"],
+          technologies: tech(
+            "Jenkins",
+            "GitLab CI",
+            "GitHub Actions",
+            "CircleCI",
+          ),
         },
       },
       {
@@ -719,7 +725,7 @@ export const architectures: Architecture[] = [
           label: "Test Suite",
           icon: "check-circle",
           nodeType: "monitor",
-          technologies: ["Jest", "Pytest", "JUnit", "Selenium"],
+          technologies: tech("Jest", "Pytest", "JUnit", "Selenium"),
         },
       },
       {
@@ -730,12 +736,12 @@ export const architectures: Architecture[] = [
           label: "Container Registry",
           icon: "package",
           nodeType: "storage",
-          technologies: [
+          technologies: tech(
             "Docker Hub",
             "AWS ECR",
             "Google GCR",
             "JFrog Artifactory",
-          ],
+          ),
         },
       },
       {
@@ -746,7 +752,7 @@ export const architectures: Architecture[] = [
           label: "Staging Env",
           icon: "server",
           nodeType: "container",
-          technologies: ["Kubernetes", "Docker Swarm", "AWS ECS"],
+          technologies: tech("Kubernetes", "Docker Swarm", "AWS ECS"),
         },
       },
       {
@@ -757,11 +763,11 @@ export const architectures: Architecture[] = [
           label: "Production Env",
           icon: "server",
           nodeType: "container",
-          technologies: [
+          technologies: tech(
             "Kubernetes (EKS, GKE, AKS)",
             "Docker Swarm",
             "AWS ECS",
-          ],
+          ),
         },
       },
     ],
@@ -860,7 +866,7 @@ export const architectures: Architecture[] = [
           label: "Load Balancer",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: ["Nginx", "HAProxy", "AWS ELB"],
+          technologies: tech("Nginx", "HAProxy", "AWS ELB"),
         },
       },
       {
@@ -871,7 +877,11 @@ export const architectures: Architecture[] = [
           label: "Monolith Instance 1",
           icon: "box",
           nodeType: "server",
-          technologies: ["Ruby on Rails", "Django", "Spring Boot (Monolithic)"],
+          technologies: tech(
+            "Ruby on Rails",
+            "Django",
+            "Spring Boot (Monolithic)",
+          ),
         },
       },
       {
@@ -882,7 +892,11 @@ export const architectures: Architecture[] = [
           label: "Monolith Instance 2",
           icon: "box",
           nodeType: "server",
-          technologies: ["Ruby on Rails", "Django", "Spring Boot (Monolithic)"],
+          technologies: tech(
+            "Ruby on Rails",
+            "Django",
+            "Spring Boot (Monolithic)",
+          ),
         },
       },
       {
@@ -893,7 +907,7 @@ export const architectures: Architecture[] = [
           label: "Relational Database",
           icon: "database",
           nodeType: "database",
-          technologies: ["PostgreSQL", "MySQL", "SQL Server"],
+          technologies: tech("PostgreSQL", "MySQL", "SQL Server"),
         },
       },
     ],
@@ -949,7 +963,7 @@ export const architectures: Architecture[] = [
           label: "API Server",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["kube-apiserver"],
+          technologies: tech("kube-apiserver"),
         },
       },
       {
@@ -960,7 +974,7 @@ export const architectures: Architecture[] = [
           label: "etcd (Key-Value)",
           icon: "database",
           nodeType: "database",
-          technologies: ["etcd"],
+          technologies: tech("etcd"),
         },
       },
       {
@@ -971,7 +985,7 @@ export const architectures: Architecture[] = [
           label: "Scheduler",
           icon: "calendar",
           nodeType: "server",
-          technologies: ["kube-scheduler"],
+          technologies: tech("kube-scheduler"),
         },
       },
       {
@@ -982,7 +996,7 @@ export const architectures: Architecture[] = [
           label: "Worker Node 1",
           icon: "server",
           nodeType: "server",
-          technologies: ["EC2 Instance", "Azure VM", "GCE VM"],
+          technologies: tech("EC2 Instance", "Azure VM", "GCE VM"),
         },
       },
       {
@@ -993,7 +1007,7 @@ export const architectures: Architecture[] = [
           label: "kubelet",
           icon: "activity",
           nodeType: "monitor",
-          technologies: ["Kubelet"],
+          technologies: tech("Kubelet"),
         },
       },
       {
@@ -1004,7 +1018,7 @@ export const architectures: Architecture[] = [
           label: "Pod (App)",
           icon: "box",
           nodeType: "container",
-          technologies: ["Docker", "containerd", "CRI-O"],
+          technologies: tech("Docker", "containerd", "CRI-O"),
         },
       },
       {
@@ -1015,7 +1029,7 @@ export const architectures: Architecture[] = [
           label: "Worker Node 2",
           icon: "server",
           nodeType: "server",
-          technologies: ["EC2 Instance", "Azure VM", "GCE VM"],
+          technologies: tech("EC2 Instance", "Azure VM", "GCE VM"),
         },
       },
       {
@@ -1026,7 +1040,7 @@ export const architectures: Architecture[] = [
           label: "kubelet",
           icon: "activity",
           nodeType: "monitor",
-          technologies: ["Kubelet"],
+          technologies: tech("Kubelet"),
         },
       },
       {
@@ -1037,7 +1051,7 @@ export const architectures: Architecture[] = [
           label: "Pod (App)",
           icon: "box",
           nodeType: "container",
-          technologies: ["Docker", "containerd", "CRI-O"],
+          technologies: tech("Docker", "containerd", "CRI-O"),
         },
       },
     ],
@@ -1090,7 +1104,7 @@ export const architectures: Architecture[] = [
           label: "CDN / WAF",
           icon: "shield",
           nodeType: "cdn",
-          technologies: ["AWS CloudFront", "AWS WAF", "Cloudflare"],
+          technologies: tech("AWS CloudFront", "AWS WAF", "Cloudflare"),
         },
       },
       {
@@ -1101,7 +1115,7 @@ export const architectures: Architecture[] = [
           label: "Object Storage",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3", "Google Cloud Storage"],
+          technologies: tech("Amazon S3", "Google Cloud Storage"),
         },
       },
       {
@@ -1112,7 +1126,7 @@ export const architectures: Architecture[] = [
           label: "Application Load Balancer",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: ["AWS ALB", "Google Cloud Load Balancer"],
+          technologies: tech("AWS ALB", "Google Cloud Load Balancer"),
         },
       },
       {
@@ -1123,10 +1137,10 @@ export const architectures: Architecture[] = [
           label: "Auto-Scaling Group",
           icon: "copy",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "AWS Auto Scaling Groups",
             "Kubernetes HPA (Horizontal Pod Autoscaler)",
-          ],
+          ),
         },
       },
       {
@@ -1137,7 +1151,7 @@ export const architectures: Architecture[] = [
           label: "Container Instance",
           icon: "box",
           nodeType: "container",
-          technologies: ["Docker", "AWS ECS", "AWS EKS"],
+          technologies: tech("Docker", "AWS ECS", "AWS EKS"),
         },
       },
       {
@@ -1148,7 +1162,7 @@ export const architectures: Architecture[] = [
           label: "Container Instance",
           icon: "box",
           nodeType: "container",
-          technologies: ["Docker", "AWS ECS", "AWS EKS"],
+          technologies: tech("Docker", "AWS ECS", "AWS EKS"),
         },
       },
       {
@@ -1159,7 +1173,7 @@ export const architectures: Architecture[] = [
           label: "Container Instance",
           icon: "box",
           nodeType: "container",
-          technologies: ["Docker", "AWS ECS", "AWS EKS"],
+          technologies: tech("Docker", "AWS ECS", "AWS EKS"),
         },
       },
       {
@@ -1170,7 +1184,7 @@ export const architectures: Architecture[] = [
           label: "Managed Cache",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Amazon ElastiCache (Redis)", "Memorystore"],
+          technologies: tech("Amazon ElastiCache (Redis)", "Memorystore"),
         },
       },
       {
@@ -1181,12 +1195,12 @@ export const architectures: Architecture[] = [
           label: "Managed DB Cluster",
           icon: "database",
           nodeType: "database",
-          technologies: [
+          technologies: tech(
             "Amazon RDS",
             "Amazon Aurora",
             "Azure SQL",
             "Google Cloud SQL",
-          ],
+          ),
         },
       },
     ],
@@ -1257,7 +1271,7 @@ export const architectures: Architecture[] = [
           label: "Image CDN",
           icon: "image",
           nodeType: "cdn",
-          technologies: ["AWS CloudFront", "Cloudinary", "Akamai"],
+          technologies: tech("AWS CloudFront", "Cloudinary", "Akamai"),
         },
       },
       {
@@ -1268,7 +1282,7 @@ export const architectures: Architecture[] = [
           label: "API Gateway",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["AWS API Gateway", "Kong", "Tyk"],
+          technologies: tech("AWS API Gateway", "Kong", "Tyk"),
         },
       },
       {
@@ -1279,7 +1293,7 @@ export const architectures: Architecture[] = [
           label: "Search Service (Elastic)",
           icon: "search",
           nodeType: "server",
-          technologies: ["Elasticsearch", "Algolia", "Amazon OpenSearch"],
+          technologies: tech("Elasticsearch", "Algolia", "Amazon OpenSearch"),
         },
       },
       {
@@ -1290,7 +1304,7 @@ export const architectures: Architecture[] = [
           label: "Catalog Service",
           icon: "list",
           nodeType: "server",
-          technologies: ["Node.js", "Go"],
+          technologies: tech("Node.js", "Go"),
         },
       },
       {
@@ -1301,7 +1315,7 @@ export const architectures: Architecture[] = [
           label: "Cart Service",
           icon: "shopping-cart",
           nodeType: "server",
-          technologies: ["Node.js", "Go"],
+          technologies: tech("Node.js", "Go"),
         },
       },
       {
@@ -1312,7 +1326,7 @@ export const architectures: Architecture[] = [
           label: "Order Service",
           icon: "clipboard",
           nodeType: "server",
-          technologies: ["Java (Spring Boot)"],
+          technologies: tech("Java (Spring Boot)"),
         },
       },
       {
@@ -1323,7 +1337,7 @@ export const architectures: Architecture[] = [
           label: "Payment Service",
           icon: "credit-card",
           nodeType: "server",
-          technologies: ["Java", "Stripe API", "Adyen API"],
+          technologies: tech("Java", "Stripe API", "Adyen API"),
         },
       },
       {
@@ -1334,7 +1348,7 @@ export const architectures: Architecture[] = [
           label: "Cart Cache (Redis)",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Amazon ElastiCache"],
+          technologies: tech("Redis", "Amazon ElastiCache"),
         },
       },
       {
@@ -1345,7 +1359,7 @@ export const architectures: Architecture[] = [
           label: "Catalog DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["MongoDB", "PostgreSQL"],
+          technologies: tech("MongoDB", "PostgreSQL"),
         },
       },
       {
@@ -1356,7 +1370,7 @@ export const architectures: Architecture[] = [
           label: "Order DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["MySQL", "Amazon RDS"],
+          technologies: tech("MySQL", "Amazon RDS"),
         },
       },
       {
@@ -1367,7 +1381,7 @@ export const architectures: Architecture[] = [
           label: "Event Queue",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["RabbitMQ", "AWS SQS"],
+          technologies: tech("RabbitMQ", "AWS SQS"),
         },
       },
     ],
@@ -1430,7 +1444,7 @@ export const architectures: Architecture[] = [
           label: "WebSocket LB",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: ["AWS NLB", "HAProxy", "Nginx"],
+          technologies: tech("AWS NLB", "HAProxy", "Nginx"),
         },
       },
       {
@@ -1441,7 +1455,7 @@ export const architectures: Architecture[] = [
           label: "WS Server 1",
           icon: "message-circle",
           nodeType: "server",
-          technologies: ["Node.js (ws)", "Go (gorilla/websocket)"],
+          technologies: tech("Node.js (ws)", "Go (gorilla/websocket)"),
         },
       },
       {
@@ -1452,7 +1466,7 @@ export const architectures: Architecture[] = [
           label: "WS Server 2",
           icon: "message-circle",
           nodeType: "server",
-          technologies: ["Node.js (ws)", "Go (gorilla/websocket)"],
+          technologies: tech("Node.js (ws)", "Go (gorilla/websocket)"),
         },
       },
       {
@@ -1463,7 +1477,7 @@ export const architectures: Architecture[] = [
           label: "Redis Pub/Sub",
           icon: "repeat",
           nodeType: "queue",
-          technologies: ["Redis", "Apache Kafka"],
+          technologies: tech("Redis", "Apache Kafka"),
         },
       },
       {
@@ -1474,7 +1488,7 @@ export const architectures: Architecture[] = [
           label: "Presence Service",
           icon: "activity",
           nodeType: "server",
-          technologies: ["Redis", "Custom Service"],
+          technologies: tech("Redis", "Custom Service"),
         },
       },
       {
@@ -1485,7 +1499,7 @@ export const architectures: Architecture[] = [
           label: "Storage Worker",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Go", "Rust"],
+          technologies: tech("Go", "Rust"),
         },
       },
       {
@@ -1496,7 +1510,7 @@ export const architectures: Architecture[] = [
           label: "Message DB (Cassandra)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Apache Cassandra", "ScyllaDB", "Amazon DynamoDB"],
+          technologies: tech("Apache Cassandra", "ScyllaDB", "Amazon DynamoDB"),
         },
       },
     ],
@@ -1548,11 +1562,11 @@ export const architectures: Architecture[] = [
           label: "Route 53 (DNS)",
           icon: "compass",
           nodeType: "gateway",
-          technologies: [
+          technologies: tech(
             "Amazon Route 53",
             "Cloudflare DNS",
             "Google Cloud DNS",
-          ],
+          ),
         },
       },
       {
@@ -1563,7 +1577,7 @@ export const architectures: Architecture[] = [
           label: "CloudFront",
           icon: "cloud",
           nodeType: "cdn",
-          technologies: ["Amazon CloudFront"],
+          technologies: tech("Amazon CloudFront"),
         },
       },
       {
@@ -1574,7 +1588,7 @@ export const architectures: Architecture[] = [
           label: "ALB",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: ["AWS Application Load Balancer"],
+          technologies: tech("AWS Application Load Balancer"),
         },
       },
       {
@@ -1585,7 +1599,7 @@ export const architectures: Architecture[] = [
           label: "EC2 (Web/App) AZ-A",
           icon: "server",
           nodeType: "server",
-          technologies: ["Amazon EC2", "Auto Scaling Group"],
+          technologies: tech("Amazon EC2", "Auto Scaling Group"),
         },
       },
       {
@@ -1596,7 +1610,7 @@ export const architectures: Architecture[] = [
           label: "EC2 (Web/App) AZ-B",
           icon: "server",
           nodeType: "server",
-          technologies: ["Amazon EC2", "Auto Scaling Group"],
+          technologies: tech("Amazon EC2", "Auto Scaling Group"),
         },
       },
       {
@@ -1607,7 +1621,7 @@ export const architectures: Architecture[] = [
           label: "RDS Master",
           icon: "database",
           nodeType: "database",
-          technologies: ["Amazon RDS (PostgreSQL, MySQL)"],
+          technologies: tech("Amazon RDS (PostgreSQL, MySQL)"),
         },
       },
       {
@@ -1618,7 +1632,7 @@ export const architectures: Architecture[] = [
           label: "RDS Standby",
           icon: "database",
           nodeType: "database",
-          technologies: ["Amazon RDS Multi-AZ"],
+          technologies: tech("Amazon RDS Multi-AZ"),
         },
       },
       {
@@ -1629,7 +1643,7 @@ export const architectures: Architecture[] = [
           label: "S3 (Static Assets)",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3"],
+          technologies: tech("Amazon S3"),
         },
       },
     ],
@@ -1693,7 +1707,7 @@ export const architectures: Architecture[] = [
           label: "Command Bus",
           icon: "send",
           nodeType: "queue",
-          technologies: ["In-memory", "RabbitMQ"],
+          technologies: tech("In-memory", "RabbitMQ"),
         },
       },
       {
@@ -1704,7 +1718,7 @@ export const architectures: Architecture[] = [
           label: "Query Bus",
           icon: "search",
           nodeType: "queue",
-          technologies: ["In-memory", "gRPC"],
+          technologies: tech("In-memory", "gRPC"),
         },
       },
       {
@@ -1715,7 +1729,7 @@ export const architectures: Architecture[] = [
           label: "Command Handlers",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["MediatR (.NET)", "Axon Framework (Java)"],
+          technologies: tech("MediatR (.NET)", "Axon Framework (Java)"),
         },
       },
       {
@@ -1726,7 +1740,7 @@ export const architectures: Architecture[] = [
           label: "Domain Aggregates",
           icon: "layers",
           nodeType: "server",
-          technologies: ["Domain-Driven Design concepts"],
+          technologies: tech("Domain-Driven Design concepts"),
         },
       },
       {
@@ -1737,7 +1751,11 @@ export const architectures: Architecture[] = [
           label: "Event Store",
           icon: "archive",
           nodeType: "database",
-          technologies: ["EventStoreDB", "Apache Kafka", "PostgreSQL (JSONB)"],
+          technologies: tech(
+            "EventStoreDB",
+            "Apache Kafka",
+            "PostgreSQL (JSONB)",
+          ),
         },
       },
       {
@@ -1748,7 +1766,7 @@ export const architectures: Architecture[] = [
           label: "Projections / Read Builder",
           icon: "refresh-cw",
           nodeType: "server",
-          technologies: ["Custom consumer service", "Kafka Streams"],
+          technologies: tech("Custom consumer service", "Kafka Streams"),
         },
       },
       {
@@ -1759,7 +1777,7 @@ export const architectures: Architecture[] = [
           label: "Read Model DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["MongoDB", "Elasticsearch", "PostgreSQL"],
+          technologies: tech("MongoDB", "Elasticsearch", "PostgreSQL"),
         },
       },
       {
@@ -1770,7 +1788,7 @@ export const architectures: Architecture[] = [
           label: "Query Handlers",
           icon: "file-search",
           nodeType: "server",
-          technologies: ["Simple data access logic"],
+          technologies: tech("Simple data access logic"),
         },
       },
       {
@@ -1781,7 +1799,7 @@ export const architectures: Architecture[] = [
           label: "Query Cache",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Memcached"],
+          technologies: tech("Redis", "Memcached"),
         },
       },
     ],
@@ -1873,7 +1891,7 @@ export const architectures: Architecture[] = [
           label: "Istiod (Control Plane)",
           icon: "settings",
           nodeType: "monitor",
-          technologies: ["Istio", "Linkerd"],
+          technologies: tech("Istio", "Linkerd"),
         },
       },
       {
@@ -1884,7 +1902,7 @@ export const architectures: Architecture[] = [
           label: "Service A + Envoy",
           icon: "server",
           nodeType: "container",
-          technologies: ["Envoy Proxy", "Linkerd Proxy"],
+          technologies: tech("Envoy Proxy", "Linkerd Proxy"),
         },
       },
       {
@@ -1895,7 +1913,7 @@ export const architectures: Architecture[] = [
           label: "Service B + Envoy",
           icon: "server",
           nodeType: "container",
-          technologies: ["Envoy Proxy", "Linkerd Proxy"],
+          technologies: tech("Envoy Proxy", "Linkerd Proxy"),
         },
       },
       {
@@ -1906,7 +1924,7 @@ export const architectures: Architecture[] = [
           label: "Service C + Envoy",
           icon: "server",
           nodeType: "container",
-          technologies: ["Envoy Proxy", "Linkerd Proxy"],
+          technologies: tech("Envoy Proxy", "Linkerd Proxy"),
         },
       },
       {
@@ -1917,7 +1935,7 @@ export const architectures: Architecture[] = [
           label: "Service D + Envoy",
           icon: "server",
           nodeType: "container",
-          technologies: ["Envoy Proxy", "Linkerd Proxy"],
+          technologies: tech("Envoy Proxy", "Linkerd Proxy"),
         },
       },
       {
@@ -1934,7 +1952,7 @@ export const architectures: Architecture[] = [
           label: "Prometheus / Jaeger",
           icon: "activity",
           nodeType: "monitor",
-          technologies: ["Prometheus", "Grafana", "Jaeger", "Zipkin"],
+          technologies: tech("Prometheus", "Grafana", "Jaeger", "Zipkin"),
         },
       },
     ],
@@ -2037,7 +2055,7 @@ export const architectures: Architecture[] = [
           label: "Ingestion (Kafka / Firehose)",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["Apache Kafka", "AWS Kinesis", "AWS Firehose"],
+          technologies: tech("Apache Kafka", "AWS Kinesis", "AWS Firehose"),
         },
       },
       {
@@ -2048,7 +2066,7 @@ export const architectures: Architecture[] = [
           label: "Bronze Layer (Raw)",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3", "Azure Data Lake Storage", "HDFS"],
+          technologies: tech("Amazon S3", "Azure Data Lake Storage", "HDFS"),
         },
       },
       {
@@ -2059,7 +2077,7 @@ export const architectures: Architecture[] = [
           label: "Spark / Databricks",
           icon: "zap",
           nodeType: "server",
-          technologies: ["Apache Spark", "Databricks", "AWS EMR"],
+          technologies: tech("Apache Spark", "Databricks", "AWS EMR"),
         },
       },
       {
@@ -2070,7 +2088,7 @@ export const architectures: Architecture[] = [
           label: "Silver Layer (Cleaned)",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Delta Lake", "Apache Iceberg", "Parquet"],
+          technologies: tech("Delta Lake", "Apache Iceberg", "Parquet"),
         },
       },
       {
@@ -2081,7 +2099,7 @@ export const architectures: Architecture[] = [
           label: "Gold Layer (Aggregated)",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Delta Lake", "Parquet"],
+          technologies: tech("Delta Lake", "Parquet"),
         },
       },
       {
@@ -2092,7 +2110,7 @@ export const architectures: Architecture[] = [
           label: "Data Catalog (Glue)",
           icon: "list",
           nodeType: "monitor",
-          technologies: ["AWS Glue Data Catalog", "Azure Data Catalog"],
+          technologies: tech("AWS Glue Data Catalog", "Azure Data Catalog"),
         },
       },
       {
@@ -2103,7 +2121,7 @@ export const architectures: Architecture[] = [
           label: "Query Engine (Athena)",
           icon: "search",
           nodeType: "server",
-          technologies: ["Amazon Athena", "Presto", "Trino"],
+          technologies: tech("Amazon Athena", "Presto", "Trino"),
         },
       },
       {
@@ -2114,7 +2132,7 @@ export const architectures: Architecture[] = [
           label: "BI Dashboards",
           icon: "bar-chart",
           nodeType: "client",
-          technologies: ["Tableau", "Power BI", "Looker"],
+          technologies: tech("Tableau", "Power BI", "Looker"),
         },
       },
       {
@@ -2125,7 +2143,7 @@ export const architectures: Architecture[] = [
           label: "ML Training",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Amazon SageMaker", "TensorFlow", "PyTorch"],
+          technologies: tech("Amazon SageMaker", "TensorFlow", "PyTorch"),
         },
       },
     ],
@@ -2200,7 +2218,7 @@ export const architectures: Architecture[] = [
           label: "DataLoader (Batching)",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["dataloader (JS library)"],
+          technologies: tech("dataloader (JS library)"),
         },
       },
       {
@@ -2211,7 +2229,7 @@ export const architectures: Architecture[] = [
           label: "Auth Service",
           icon: "shield",
           nodeType: "server",
-          technologies: ["REST API", "gRPC"],
+          technologies: tech("REST API", "gRPC"),
         },
       },
       {
@@ -2222,7 +2240,7 @@ export const architectures: Architecture[] = [
           label: "User Service",
           icon: "users",
           nodeType: "server",
-          technologies: ["REST API", "gRPC"],
+          technologies: tech("REST API", "gRPC"),
         },
       },
       {
@@ -2233,7 +2251,7 @@ export const architectures: Architecture[] = [
           label: "Product Service",
           icon: "box",
           nodeType: "server",
-          technologies: ["REST API", "gRPC"],
+          technologies: tech("REST API", "gRPC"),
         },
       },
       {
@@ -2244,7 +2262,7 @@ export const architectures: Architecture[] = [
           label: "Order Service",
           icon: "clipboard",
           nodeType: "server",
-          technologies: ["REST API", "gRPC"],
+          technologies: tech("REST API", "gRPC"),
         },
       },
       {
@@ -2255,7 +2273,7 @@ export const architectures: Architecture[] = [
           label: "Primary Database",
           icon: "database",
           nodeType: "database",
-          technologies: ["PostgreSQL", "MySQL", "Vitess"],
+          technologies: tech("PostgreSQL", "MySQL", "Vitess"),
         },
       },
       {
@@ -2266,7 +2284,7 @@ export const architectures: Architecture[] = [
           label: "Response Cache",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Varnish"],
+          technologies: tech("Redis", "Varnish"),
         },
       },
       {
@@ -2277,7 +2295,7 @@ export const architectures: Architecture[] = [
           label: "Subscriptions (WS)",
           icon: "repeat",
           nodeType: "queue",
-          technologies: ["WebSocket", "graphql-ws"],
+          technologies: tech("WebSocket", "graphql-ws"),
         },
       },
     ],
@@ -2366,7 +2384,7 @@ export const architectures: Architecture[] = [
           label: "Web BFF",
           icon: "monitor",
           nodeType: "server",
-          technologies: ["Node.js (Next.js)", "GraphQL Server"],
+          technologies: tech("Node.js (Next.js)", "GraphQL Server"),
         },
       },
       {
@@ -2377,7 +2395,7 @@ export const architectures: Architecture[] = [
           label: "Mobile BFF",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Go", "GraphQL Server"],
+          technologies: tech("Go", "GraphQL Server"),
         },
       },
       {
@@ -2388,7 +2406,7 @@ export const architectures: Architecture[] = [
           label: "TV BFF",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Go", "gRPC Gateway"],
+          technologies: tech("Go", "gRPC Gateway"),
         },
       },
       {
@@ -2495,7 +2513,11 @@ export const architectures: Architecture[] = [
           label: "Saga Orchestrator",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["AWS Step Functions", "Temporal", "Custom Service"],
+          technologies: tech(
+            "AWS Step Functions",
+            "Temporal",
+            "Custom Service",
+          ),
         },
       },
       {
@@ -2556,7 +2578,7 @@ export const architectures: Architecture[] = [
           label: "Event Bus",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["Apache Kafka", "RabbitMQ", "AWS SNS"],
+          technologies: tech("Apache Kafka", "RabbitMQ", "AWS SNS"),
         },
       },
     ],
@@ -2656,7 +2678,7 @@ export const architectures: Architecture[] = [
           label: "Event Consumer Adapter",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["RabbitMQ", "Kafka", "AWS SQS"],
+          technologies: tech("RabbitMQ", "Kafka", "AWS SQS"),
         },
       },
       {
@@ -2667,7 +2689,7 @@ export const architectures: Architecture[] = [
           label: "Inbound Ports (Use Cases)",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["TypeScript Interfaces", "Java Interfaces"],
+          technologies: tech("TypeScript Interfaces", "Java Interfaces"),
         },
       },
       {
@@ -2678,7 +2700,10 @@ export const architectures: Architecture[] = [
           label: "Domain Core (Entities & Logic)",
           icon: "layers",
           nodeType: "server",
-          technologies: ["Plain Old Objects (POCO/POJO)", "Zero Dependencies"],
+          technologies: tech(
+            "Plain Old Objects (POCO/POJO)",
+            "Zero Dependencies",
+          ),
         },
       },
       {
@@ -2689,7 +2714,7 @@ export const architectures: Architecture[] = [
           label: "Outbound Ports (Interfaces)",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["TypeScript Interfaces", "Java Interfaces"],
+          technologies: tech("TypeScript Interfaces", "Java Interfaces"),
         },
       },
       {
@@ -2700,7 +2725,7 @@ export const architectures: Architecture[] = [
           label: "DB Adapter (Postgres)",
           icon: "database",
           nodeType: "database",
-          technologies: ["node-postgres", "TypeORM", "SQLAlchemy"],
+          technologies: tech("node-postgres", "TypeORM", "SQLAlchemy"),
         },
       },
       {
@@ -2711,7 +2736,7 @@ export const architectures: Architecture[] = [
           label: "MQ Adapter (RabbitMQ)",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["amqplib", "pika"],
+          technologies: tech("amqplib", "pika"),
         },
       },
       {
@@ -2722,7 +2747,7 @@ export const architectures: Architecture[] = [
           label: "External API Adapter",
           icon: "globe",
           nodeType: "server",
-          technologies: ["Axios", "fetch", "gRPC Client"],
+          technologies: tech("Axios", "fetch", "gRPC Client"),
         },
       },
     ],
@@ -2784,7 +2809,7 @@ export const architectures: Architecture[] = [
           label: "GeoDNS / Global LB",
           icon: "globe",
           nodeType: "loadbalancer",
-          technologies: ["Amazon Route 53 (Latency Routing)", "Cloudflare"],
+          technologies: tech("Amazon Route 53 (Latency Routing)", "Cloudflare"),
         },
       },
       {
@@ -2795,7 +2820,7 @@ export const architectures: Architecture[] = [
           label: "Global CDN",
           icon: "cloud",
           nodeType: "cdn",
-          technologies: ["Amazon CloudFront", "Fastly"],
+          technologies: tech("Amazon CloudFront", "Fastly"),
         },
       },
       {
@@ -2826,7 +2851,7 @@ export const architectures: Architecture[] = [
           label: "DB Cluster (US)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Amazon Aurora Global DB", "CockroachDB"],
+          technologies: tech("Amazon Aurora Global DB", "CockroachDB"),
         },
       },
       {
@@ -2837,7 +2862,7 @@ export const architectures: Architecture[] = [
           label: "DB Cluster (EU)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Amazon Aurora Global DB", "CockroachDB"],
+          technologies: tech("Amazon Aurora Global DB", "CockroachDB"),
         },
       },
       {
@@ -2848,7 +2873,7 @@ export const architectures: Architecture[] = [
           label: "Cache (US)",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Memcached"],
+          technologies: tech("Redis", "Memcached"),
         },
       },
       {
@@ -2859,7 +2884,7 @@ export const architectures: Architecture[] = [
           label: "Cache (EU)",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Memcached"],
+          technologies: tech("Redis", "Memcached"),
         },
       },
       {
@@ -2870,7 +2895,7 @@ export const architectures: Architecture[] = [
           label: "Global Monitoring",
           icon: "activity",
           nodeType: "monitor",
-          technologies: ["Datadog", "New Relic"],
+          technologies: tech("Datadog", "New Relic"),
         },
       },
     ],
@@ -2959,7 +2984,11 @@ export const architectures: Architecture[] = [
           label: "Feature Store",
           icon: "database",
           nodeType: "database",
-          technologies: ["Feast", "Tecton", "Amazon SageMaker Feature Store"],
+          technologies: tech(
+            "Feast",
+            "Tecton",
+            "Amazon SageMaker Feature Store",
+          ),
         },
       },
       {
@@ -2970,7 +2999,7 @@ export const architectures: Architecture[] = [
           label: "Training Cluster (GPU)",
           icon: "zap",
           nodeType: "server",
-          technologies: ["Kubernetes (Kubeflow)", "Amazon SageMaker"],
+          technologies: tech("Kubernetes (Kubeflow)", "Amazon SageMaker"),
         },
       },
       {
@@ -2981,7 +3010,7 @@ export const architectures: Architecture[] = [
           label: "Model Evaluation",
           icon: "check-circle",
           nodeType: "monitor",
-          technologies: ["Custom scripts", "MLflow"],
+          technologies: tech("Custom scripts", "MLflow"),
         },
       },
       {
@@ -2992,10 +3021,10 @@ export const architectures: Architecture[] = [
           label: "Model Registry",
           icon: "archive",
           nodeType: "storage",
-          technologies: [
+          technologies: tech(
             "MLflow Model Registry",
             "Amazon SageMaker Model Registry",
-          ],
+          ),
         },
       },
       {
@@ -3006,7 +3035,11 @@ export const architectures: Architecture[] = [
           label: "Model Serving API",
           icon: "server",
           nodeType: "server",
-          technologies: ["Seldon Core", "KServe", "Amazon SageMaker Endpoints"],
+          technologies: tech(
+            "Seldon Core",
+            "KServe",
+            "Amazon SageMaker Endpoints",
+          ),
         },
       },
       {
@@ -3017,7 +3050,7 @@ export const architectures: Architecture[] = [
           label: "Shadow / A-B Deployment",
           icon: "copy",
           nodeType: "server",
-          technologies: ["Istio", "Seldon Core"],
+          technologies: tech("Istio", "Seldon Core"),
         },
       },
       {
@@ -3028,7 +3061,7 @@ export const architectures: Architecture[] = [
           label: "Drift Monitor",
           icon: "activity",
           nodeType: "monitor",
-          technologies: ["Evidently AI", "Amazon SageMaker Model Monitor"],
+          technologies: tech("Evidently AI", "Amazon SageMaker Model Monitor"),
         },
       },
       {
@@ -3049,11 +3082,11 @@ export const architectures: Architecture[] = [
           label: "Pipeline Orchestrator (Airflow)",
           icon: "refresh-cw",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "Apache Airflow",
             "Kubeflow Pipelines",
             "AWS Step Functions",
-          ],
+          ),
         },
       },
     ],
@@ -3145,7 +3178,7 @@ export const architectures: Architecture[] = [
           label: "Identity Provider (IdP)",
           icon: "key",
           nodeType: "server",
-          technologies: ["Okta", "Auth0", "Azure AD", "Keycloak"],
+          technologies: tech("Okta", "Auth0", "Azure AD", "Keycloak"),
         },
       },
       {
@@ -3156,7 +3189,7 @@ export const architectures: Architecture[] = [
           label: "Policy Engine (PDP)",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Open Policy Agent (OPA)"],
+          technologies: tech("Open Policy Agent (OPA)"),
         },
       },
       {
@@ -3213,7 +3246,7 @@ export const architectures: Architecture[] = [
           label: "Certificate Manager (mTLS)",
           icon: "award",
           nodeType: "monitor",
-          technologies: ["cert-manager", "SPIFFE/SPIRE"],
+          technologies: tech("cert-manager", "SPIFFE/SPIRE"),
         },
       },
     ],
@@ -3325,12 +3358,12 @@ export const architectures: Architecture[] = [
           label: "Build System (CI)",
           icon: "refresh-cw",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "Vercel",
             "Netlify",
             "Cloudflare Pages",
             "GitHub Actions",
-          ],
+          ),
         },
       },
       {
@@ -3341,7 +3374,7 @@ export const architectures: Architecture[] = [
           label: "Headless CMS",
           icon: "file-text",
           nodeType: "server",
-          technologies: ["Contentful", "Sanity", "Strapi"],
+          technologies: tech("Contentful", "Sanity", "Strapi"),
         },
       },
       {
@@ -3352,7 +3385,11 @@ export const architectures: Architecture[] = [
           label: "CDN Edge (Global)",
           icon: "globe",
           nodeType: "cdn",
-          technologies: ["Vercel Edge Network", "Netlify Edge", "Cloudflare"],
+          technologies: tech(
+            "Vercel Edge Network",
+            "Netlify Edge",
+            "Cloudflare",
+          ),
         },
       },
       {
@@ -3399,7 +3436,7 @@ export const architectures: Architecture[] = [
           label: "Search API (Algolia)",
           icon: "search",
           nodeType: "server",
-          technologies: ["Algolia"],
+          technologies: tech("Algolia"),
         },
       },
     ],
@@ -3530,7 +3567,7 @@ export const architectures: Architecture[] = [
           label: "Message Broker (Topics)",
           icon: "layers",
           nodeType: "queue",
-          technologies: ["Apache Kafka", "RabbitMQ", "AWS SNS"],
+          technologies: tech("Apache Kafka", "RabbitMQ", "AWS SNS"),
         },
       },
       {
@@ -3541,7 +3578,7 @@ export const architectures: Architecture[] = [
           label: "Topic: user.events",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["Kafka Topic", "RabbitMQ Exchange"],
+          technologies: tech("Kafka Topic", "RabbitMQ Exchange"),
         },
       },
       {
@@ -3552,7 +3589,7 @@ export const architectures: Architecture[] = [
           label: "Topic: order.events",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["Kafka Topic", "RabbitMQ Exchange"],
+          technologies: tech("Kafka Topic", "RabbitMQ Exchange"),
         },
       },
       {
@@ -3563,7 +3600,7 @@ export const architectures: Architecture[] = [
           label: "Topic: payment.events",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["Kafka Topic", "RabbitMQ Exchange"],
+          technologies: tech("Kafka Topic", "RabbitMQ Exchange"),
         },
       },
       {
@@ -3574,7 +3611,7 @@ export const architectures: Architecture[] = [
           label: "Subscriber: Email Service",
           icon: "mail",
           nodeType: "server",
-          technologies: ["Node.js", "Go", "Python"],
+          technologies: tech("Node.js", "Go", "Python"),
         },
       },
       {
@@ -3585,7 +3622,7 @@ export const architectures: Architecture[] = [
           label: "Subscriber: Analytics",
           icon: "bar-chart",
           nodeType: "server",
-          technologies: ["Apache Spark", "Apache Flink"],
+          technologies: tech("Apache Spark", "Apache Flink"),
         },
       },
       {
@@ -3596,7 +3633,7 @@ export const architectures: Architecture[] = [
           label: "Subscriber: Inventory",
           icon: "package",
           nodeType: "server",
-          technologies: ["Java", "Go"],
+          technologies: tech("Java", "Go"),
         },
       },
       {
@@ -3607,7 +3644,7 @@ export const architectures: Architecture[] = [
           label: "Subscriber: Audit Log",
           icon: "archive",
           nodeType: "database",
-          technologies: ["ELK Stack", "Splunk"],
+          technologies: tech("ELK Stack", "Splunk"),
         },
       },
     ],
@@ -3666,7 +3703,10 @@ export const architectures: Architecture[] = [
           label: "Routing Facade",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["API Gateway (e.g., Kong, AWS API Gateway)", "Nginx"],
+          technologies: tech(
+            "API Gateway (e.g., Kong, AWS API Gateway)",
+            "Nginx",
+          ),
         },
       },
       {
@@ -3677,11 +3717,11 @@ export const architectures: Architecture[] = [
           label: "Legacy Monolith",
           icon: "server",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "Mainframe (COBOL)",
             "Old Java App (J2EE)",
             "Ruby on Rails",
-          ],
+          ),
         },
       },
       {
@@ -3692,7 +3732,7 @@ export const architectures: Architecture[] = [
           label: "Users Service",
           icon: "users",
           nodeType: "server",
-          technologies: ["Go", "Node.js"],
+          technologies: tech("Go", "Node.js"),
         },
       },
       {
@@ -3703,7 +3743,7 @@ export const architectures: Architecture[] = [
           label: "Orders Service",
           icon: "clipboard",
           nodeType: "server",
-          technologies: ["Java (Spring Boot)"],
+          technologies: tech("Java (Spring Boot)"),
         },
       },
       {
@@ -3714,7 +3754,7 @@ export const architectures: Architecture[] = [
           label: "Payments Service",
           icon: "credit-card",
           nodeType: "server",
-          technologies: ["Python (Django)"],
+          technologies: tech("Python (Django)"),
         },
       },
       {
@@ -3735,7 +3775,7 @@ export const architectures: Architecture[] = [
           label: "New Service DBs",
           icon: "database",
           nodeType: "database",
-          technologies: ["PostgreSQL", "MySQL"],
+          technologies: tech("PostgreSQL", "MySQL"),
         },
       },
       {
@@ -3833,7 +3873,7 @@ export const architectures: Architecture[] = [
           label: "Circuit Breaker",
           icon: "shield",
           nodeType: "monitor",
-          technologies: ["Resilience4j", "Polly", "Istio"],
+          technologies: tech("Resilience4j", "Polly", "Istio"),
         },
       },
       {
@@ -3968,7 +4008,7 @@ export const architectures: Architecture[] = [
           label: "CI Pipeline",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["GitHub Actions", "GitLab CI"],
+          technologies: tech("GitHub Actions", "GitLab CI"),
         },
       },
       {
@@ -3979,7 +4019,7 @@ export const architectures: Architecture[] = [
           label: "Container Registry",
           icon: "package",
           nodeType: "storage",
-          technologies: ["Docker Hub", "AWS ECR", "GCR"],
+          technologies: tech("Docker Hub", "AWS ECR", "GCR"),
         },
       },
       {
@@ -3990,7 +4030,7 @@ export const architectures: Architecture[] = [
           label: "Argo CD / Flux",
           icon: "refresh-cw",
           nodeType: "monitor",
-          technologies: ["Argo CD", "FluxCD"],
+          technologies: tech("Argo CD", "FluxCD"),
         },
       },
       {
@@ -4021,7 +4061,7 @@ export const architectures: Architecture[] = [
           label: "Sealed Secrets / Vault",
           icon: "shield",
           nodeType: "gateway",
-          technologies: ["Bitnami Sealed Secrets", "HashiCorp Vault"],
+          technologies: tech("Bitnami Sealed Secrets", "HashiCorp Vault"),
         },
       },
     ],
@@ -4128,7 +4168,7 @@ export const architectures: Architecture[] = [
           label: "Batch Layer (Spark)",
           icon: "hard-drive",
           nodeType: "server",
-          technologies: ["Apache Spark", "Hadoop MapReduce", "AWS Batch"],
+          technologies: tech("Apache Spark", "Hadoop MapReduce", "AWS Batch"),
         },
       },
       {
@@ -4139,7 +4179,7 @@ export const architectures: Architecture[] = [
           label: "Speed Layer (Flink)",
           icon: "zap",
           nodeType: "server",
-          technologies: ["Apache Flink", "Apache Storm", "Spark Streaming"],
+          technologies: tech("Apache Flink", "Apache Storm", "Spark Streaming"),
         },
       },
       {
@@ -4150,7 +4190,7 @@ export const architectures: Architecture[] = [
           label: "Master Dataset (HDFS/S3)",
           icon: "database",
           nodeType: "storage",
-          technologies: ["HDFS", "Amazon S3", "Azure Data Lake Storage"],
+          technologies: tech("HDFS", "Amazon S3", "Azure Data Lake Storage"),
         },
       },
       {
@@ -4161,7 +4201,7 @@ export const architectures: Architecture[] = [
           label: "Batch Views",
           icon: "bar-chart",
           nodeType: "database",
-          technologies: ["Parquet files", "HBase"],
+          technologies: tech("Parquet files", "HBase"),
         },
       },
       {
@@ -4172,7 +4212,7 @@ export const architectures: Architecture[] = [
           label: "Real-Time Views",
           icon: "activity",
           nodeType: "cache",
-          technologies: ["Redis", "Cassandra"],
+          technologies: tech("Redis", "Cassandra"),
         },
       },
       {
@@ -4183,7 +4223,7 @@ export const architectures: Architecture[] = [
           label: "Serving Layer",
           icon: "layers",
           nodeType: "server",
-          technologies: ["Custom API", "Presto"],
+          technologies: tech("Custom API", "Presto"),
         },
       },
       {
@@ -4194,7 +4234,7 @@ export const architectures: Architecture[] = [
           label: "Query API",
           icon: "search",
           nodeType: "gateway",
-          technologies: ["REST API", "BI Tool Connector (e.g., Tableau)"],
+          technologies: tech("REST API", "BI Tool Connector (e.g., Tableau)"),
         },
       },
     ],
@@ -4263,7 +4303,7 @@ export const architectures: Architecture[] = [
           label: "Shard Router (Vitess)",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: ["Vitess", "ProxySQL", "Application-level routing"],
+          technologies: tech("Vitess", "ProxySQL", "Application-level routing"),
         },
       },
       {
@@ -4322,7 +4362,7 @@ export const architectures: Architecture[] = [
           label: "Cross-Shard Coordinator",
           icon: "layers",
           nodeType: "server",
-          technologies: ["Application Logic", "Two-Phase Commit (2PC)"],
+          technologies: tech("Application Logic", "Two-Phase Commit (2PC)"),
         },
       },
     ],
@@ -4440,7 +4480,7 @@ export const architectures: Architecture[] = [
           label: "Outbox Relay (Debezium)",
           icon: "refresh-cw",
           nodeType: "server",
-          technologies: ["Debezium", "Polling Publisher", "Kafka Connect"],
+          technologies: tech("Debezium", "Polling Publisher", "Kafka Connect"),
         },
       },
       {
@@ -4451,7 +4491,7 @@ export const architectures: Architecture[] = [
           label: "Message Broker",
           icon: "layers",
           nodeType: "queue",
-          technologies: ["Apache Kafka", "RabbitMQ", "AWS SQS/SNS"],
+          technologies: tech("Apache Kafka", "RabbitMQ", "AWS SQS/SNS"),
         },
       },
       {
@@ -4562,7 +4602,7 @@ export const architectures: Architecture[] = [
           label: "Signaling Server",
           icon: "message-square",
           nodeType: "server",
-          technologies: ["Node.js (Socket.IO, ws)", "Go"],
+          technologies: tech("Node.js (Socket.IO, ws)", "Go"),
         },
       },
       {
@@ -4573,7 +4613,7 @@ export const architectures: Architecture[] = [
           label: "STUN / TURN",
           icon: "globe",
           nodeType: "gateway",
-          technologies: ["coturn", "AWS Kinesis Video Streams"],
+          technologies: tech("coturn", "AWS Kinesis Video Streams"),
         },
       },
       {
@@ -4584,7 +4624,7 @@ export const architectures: Architecture[] = [
           label: "SFU (Janus / mediasoup)",
           icon: "radio",
           nodeType: "server",
-          technologies: ["mediasoup", "Janus", "LiveKit", "Pion"],
+          technologies: tech("mediasoup", "Janus", "LiveKit", "Pion"),
         },
       },
       {
@@ -4698,7 +4738,7 @@ export const architectures: Architecture[] = [
           label: "Load Balancer / Istio",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: ["Istio", "Linkerd", "AWS ALB", "Nginx"],
+          technologies: tech("Istio", "Linkerd", "AWS ALB", "Nginx"),
         },
       },
       {
@@ -4765,7 +4805,7 @@ export const architectures: Architecture[] = [
           label: "Traffic Rules (90/10)",
           icon: "toggle-left",
           nodeType: "gateway",
-          technologies: ["Istio VirtualService", "ALB Target Groups"],
+          technologies: tech("Istio VirtualService", "ALB Target Groups"),
         },
       },
     ],
@@ -4855,7 +4895,7 @@ export const architectures: Architecture[] = [
           label: "Edge Gateway",
           icon: "router",
           nodeType: "gateway",
-          technologies: ["AWS IoT Greengrass", "Azure IoT Edge"],
+          technologies: tech("AWS IoT Greengrass", "Azure IoT Edge"),
         },
       },
       {
@@ -4866,7 +4906,7 @@ export const architectures: Architecture[] = [
           label: "Edge Compute Node",
           icon: "server",
           nodeType: "server",
-          technologies: ["NVIDIA Jetson", "Raspberry Pi", "Industrial PC"],
+          technologies: tech("NVIDIA Jetson", "Raspberry Pi", "Industrial PC"),
         },
       },
       {
@@ -4877,7 +4917,7 @@ export const architectures: Architecture[] = [
           label: "Local ML Inference",
           icon: "brain",
           nodeType: "function",
-          technologies: ["TensorFlow Lite", "ONNX Runtime"],
+          technologies: tech("TensorFlow Lite", "ONNX Runtime"),
         },
       },
       {
@@ -4888,7 +4928,7 @@ export const architectures: Architecture[] = [
           label: "Local Time-Series DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["InfluxDB", "Prometheus"],
+          technologies: tech("InfluxDB", "Prometheus"),
         },
       },
       {
@@ -4899,7 +4939,7 @@ export const architectures: Architecture[] = [
           label: "Cloud Control Plane",
           icon: "cloud",
           nodeType: "server",
-          technologies: ["AWS IoT Core", "Azure IoT Hub"],
+          technologies: tech("AWS IoT Core", "Azure IoT Hub"),
         },
       },
       {
@@ -4910,7 +4950,7 @@ export const architectures: Architecture[] = [
           label: "Cloud Analytics",
           icon: "bar-chart",
           nodeType: "monitor",
-          technologies: ["Amazon Timestream", "Databricks"],
+          technologies: tech("Amazon Timestream", "Databricks"),
         },
       },
     ],
@@ -5005,7 +5045,7 @@ export const architectures: Architecture[] = [
           label: "API Gateway",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["AWS API Gateway", "Nginx"],
+          technologies: tech("AWS API Gateway", "Nginx"),
         },
       },
       {
@@ -5016,7 +5056,7 @@ export const architectures: Architecture[] = [
           label: "Notification Service (WebSocket)",
           icon: "message-circle",
           nodeType: "server",
-          technologies: ["Node.js (Socket.IO)", "Go"],
+          technologies: tech("Node.js (Socket.IO)", "Go"),
         },
       },
       {
@@ -5027,7 +5067,7 @@ export const architectures: Architecture[] = [
           label: "Metadata Service",
           icon: "file-text",
           nodeType: "server",
-          technologies: ["Go", "Java"],
+          technologies: tech("Go", "Java"),
         },
       },
       {
@@ -5038,7 +5078,12 @@ export const architectures: Architecture[] = [
           label: "Synchronization Service",
           icon: "refresh-cw",
           nodeType: "server",
-          technologies: ["Go", "Java", "Long Polling", "Diffing algorithms"],
+          technologies: tech(
+            "Go",
+            "Java",
+            "Long Polling",
+            "Diffing algorithms",
+          ),
         },
       },
       {
@@ -5049,7 +5094,7 @@ export const architectures: Architecture[] = [
           label: "Metadata DB (SQL)",
           icon: "database",
           nodeType: "database",
-          technologies: ["MySQL", "PostgreSQL", "Amazon RDS"],
+          technologies: tech("MySQL", "PostgreSQL", "Amazon RDS"),
         },
       },
       {
@@ -5060,7 +5105,7 @@ export const architectures: Architecture[] = [
           label: "Object Storage (S3/GCS)",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3", "Google Cloud Storage"],
+          technologies: tech("Amazon S3", "Google Cloud Storage"),
         },
       },
       {
@@ -5071,7 +5116,7 @@ export const architectures: Architecture[] = [
           label: "Message Queue",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["RabbitMQ", "AWS SQS"],
+          technologies: tech("RabbitMQ", "AWS SQS"),
         },
       },
       {
@@ -5082,7 +5127,7 @@ export const architectures: Architecture[] = [
           label: "Background Workers",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Celery (Python)", "Sidekiq (Ruby)"],
+          technologies: tech("Celery (Python)", "Sidekiq (Ruby)"),
         },
       },
     ],
@@ -5185,7 +5230,7 @@ export const architectures: Architecture[] = [
           label: "API Gateway",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["AWS API Gateway", "Kong"],
+          technologies: tech("AWS API Gateway", "Kong"),
         },
       },
       {
@@ -5196,7 +5241,7 @@ export const architectures: Architecture[] = [
           label: "Upload Service",
           icon: "server",
           nodeType: "server",
-          technologies: ["Node.js", "Go"],
+          technologies: tech("Node.js", "Go"),
         },
       },
       {
@@ -5207,7 +5252,7 @@ export const architectures: Architecture[] = [
           label: "Transcoding Queue",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["RabbitMQ", "AWS SQS"],
+          technologies: tech("RabbitMQ", "AWS SQS"),
         },
       },
       {
@@ -5218,7 +5263,7 @@ export const architectures: Architecture[] = [
           label: "Transcoding Workers",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["FFmpeg", "AWS Elastic Transcoder", "Celery"],
+          technologies: tech("FFmpeg", "AWS Elastic Transcoder", "Celery"),
         },
       },
       {
@@ -5229,7 +5274,7 @@ export const architectures: Architecture[] = [
           label: "Video Object Storage",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3", "Google Cloud Storage"],
+          technologies: tech("Amazon S3", "Google Cloud Storage"),
         },
       },
       {
@@ -5240,7 +5285,7 @@ export const architectures: Architecture[] = [
           label: "CDN",
           icon: "globe",
           nodeType: "cdn",
-          technologies: ["Amazon CloudFront", "Akamai", "Cloudflare"],
+          technologies: tech("Amazon CloudFront", "Akamai", "Cloudflare"),
         },
       },
       {
@@ -5251,7 +5296,7 @@ export const architectures: Architecture[] = [
           label: "Metadata Service",
           icon: "file-text",
           nodeType: "server",
-          technologies: ["Node.js", "Java"],
+          technologies: tech("Node.js", "Java"),
         },
       },
       {
@@ -5262,7 +5307,7 @@ export const architectures: Architecture[] = [
           label: "Metadata DB (Cassandra)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Apache Cassandra", "Amazon DynamoDB"],
+          technologies: tech("Apache Cassandra", "Amazon DynamoDB"),
         },
       },
       {
@@ -5273,7 +5318,7 @@ export const architectures: Architecture[] = [
           label: "Search Service",
           icon: "search",
           nodeType: "server",
-          technologies: ["Elasticsearch"],
+          technologies: tech("Elasticsearch"),
         },
       },
       {
@@ -5284,7 +5329,7 @@ export const architectures: Architecture[] = [
           label: "Recommendation Service",
           icon: "star",
           nodeType: "server",
-          technologies: ["Apache Spark (MLlib)", "Python (scikit-learn)"],
+          technologies: tech("Apache Spark (MLlib)", "Python (scikit-learn)"),
         },
       },
     ],
@@ -5362,7 +5407,7 @@ export const architectures: Architecture[] = [
           label: "API Gateway",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["AWS API Gateway", "Nginx"],
+          technologies: tech("AWS API Gateway", "Nginx"),
         },
       },
       {
@@ -5373,7 +5418,7 @@ export const architectures: Architecture[] = [
           label: "Autocomplete Service",
           icon: "server",
           nodeType: "server",
-          technologies: ["Go", "Rust", "C++"],
+          technologies: tech("Go", "Rust", "C++"),
         },
       },
       {
@@ -5384,7 +5429,7 @@ export const architectures: Architecture[] = [
           label: "Suggestions Cache (Redis)",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Memcached"],
+          technologies: tech("Redis", "Memcached"),
         },
       },
       {
@@ -5395,7 +5440,7 @@ export const architectures: Architecture[] = [
           label: "Trie Data Store",
           icon: "git-branch",
           nodeType: "database",
-          technologies: ["Custom in-memory Trie", "Redis (with modules)"],
+          technologies: tech("Custom in-memory Trie", "Redis (with modules)"),
         },
       },
       {
@@ -5406,7 +5451,7 @@ export const architectures: Architecture[] = [
           label: "Analytics Service",
           icon: "bar-chart",
           nodeType: "server",
-          technologies: ["Apache Kafka", "Go"],
+          technologies: tech("Apache Kafka", "Go"),
         },
       },
       {
@@ -5417,7 +5462,7 @@ export const architectures: Architecture[] = [
           label: "Query Analytics DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["ClickHouse", "Apache Druid"],
+          technologies: tech("ClickHouse", "Apache Druid"),
         },
       },
       {
@@ -5428,7 +5473,7 @@ export const architectures: Architecture[] = [
           label: "Trie Builder (Offline Job)",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Apache Spark", "Hadoop"],
+          technologies: tech("Apache Spark", "Hadoop"),
         },
       },
     ],
@@ -5518,7 +5563,7 @@ export const architectures: Architecture[] = [
           label: "WebSocket Gateway",
           icon: "network",
           nodeType: "gateway",
-          technologies: ["Nginx", "HAProxy", "AWS NLB"],
+          technologies: tech("Nginx", "HAProxy", "AWS NLB"),
         },
       },
       {
@@ -5529,7 +5574,7 @@ export const architectures: Architecture[] = [
           label: "Chat Service 1",
           icon: "message-circle",
           nodeType: "server",
-          technologies: ["Erlang/OTP", "Elixir (Phoenix)", "Go"],
+          technologies: tech("Erlang/OTP", "Elixir (Phoenix)", "Go"),
         },
       },
       {
@@ -5540,7 +5585,7 @@ export const architectures: Architecture[] = [
           label: "Chat Service 2",
           icon: "message-circle",
           nodeType: "server",
-          technologies: ["Erlang/OTP", "Elixir (Phoenix)", "Go"],
+          technologies: tech("Erlang/OTP", "Elixir (Phoenix)", "Go"),
         },
       },
       {
@@ -5551,7 +5596,7 @@ export const architectures: Architecture[] = [
           label: "Presence Service",
           icon: "activity",
           nodeType: "server",
-          technologies: ["Redis", "Custom service"],
+          technologies: tech("Redis", "Custom service"),
         },
       },
       {
@@ -5562,7 +5607,7 @@ export const architectures: Architecture[] = [
           label: "Pub/Sub System",
           icon: "repeat",
           nodeType: "queue",
-          technologies: ["Redis Pub/Sub", "Apache Kafka"],
+          technologies: tech("Redis Pub/Sub", "Apache Kafka"),
         },
       },
       {
@@ -5573,7 +5618,7 @@ export const architectures: Architecture[] = [
           label: "Message API",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Go", "Java"],
+          technologies: tech("Go", "Java"),
         },
       },
       {
@@ -5584,7 +5629,7 @@ export const architectures: Architecture[] = [
           label: "Message DB (Cassandra)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Apache Cassandra", "ScyllaDB"],
+          technologies: tech("Apache Cassandra", "ScyllaDB"),
         },
       },
       {
@@ -5595,11 +5640,11 @@ export const architectures: Architecture[] = [
           label: "Push Notification Service",
           icon: "bell",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "APNS (Apple Push Notification Service)",
             "FCM (Firebase Cloud Messaging)",
             "Custom service",
-          ],
+          ),
         },
       },
     ],
@@ -5688,7 +5733,7 @@ export const architectures: Architecture[] = [
           label: "API Gateway",
           icon: "door-open",
           nodeType: "gateway",
-          technologies: ["AWS API Gateway", "Nginx"],
+          technologies: tech("AWS API Gateway", "Nginx"),
         },
       },
       {
@@ -5699,7 +5744,7 @@ export const architectures: Architecture[] = [
           label: "Post Service",
           icon: "server",
           nodeType: "server",
-          technologies: ["Go", "Java"],
+          technologies: tech("Go", "Java"),
         },
       },
       {
@@ -5710,7 +5755,7 @@ export const architectures: Architecture[] = [
           label: "Post DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["Cassandra", "DynamoDB"],
+          technologies: tech("Cassandra", "DynamoDB"),
         },
       },
       {
@@ -5721,7 +5766,7 @@ export const architectures: Architecture[] = [
           label: "Fan-out Service",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Celery", "Go", "Redis/Kafka consumers"],
+          technologies: tech("Celery", "Go", "Redis/Kafka consumers"),
         },
       },
       {
@@ -5732,7 +5777,7 @@ export const architectures: Architecture[] = [
           label: "User Graph DB",
           icon: "users",
           nodeType: "database",
-          technologies: ["Neo4j", "Amazon Neptune", "FlockDB"],
+          technologies: tech("Neo4j", "Amazon Neptune", "FlockDB"),
         },
       },
       {
@@ -5743,7 +5788,7 @@ export const architectures: Architecture[] = [
           label: "Feed Cache (Redis)",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Memcached"],
+          technologies: tech("Redis", "Memcached"),
         },
       },
       {
@@ -5754,7 +5799,7 @@ export const architectures: Architecture[] = [
           label: "News Feed Service",
           icon: "server",
           nodeType: "server",
-          technologies: ["Node.js", "Go"],
+          technologies: tech("Node.js", "Go"),
         },
       },
       {
@@ -5765,7 +5810,7 @@ export const architectures: Architecture[] = [
           label: "Ranking Service",
           icon: "bar-chart",
           nodeType: "server",
-          technologies: ["Python (ML models)", "Custom Go service"],
+          technologies: tech("Python (ML models)", "Custom Go service"),
         },
       },
     ],
@@ -6038,7 +6083,7 @@ export const architectures: Architecture[] = [
           label: "URL Frontier",
           icon: "inbox",
           nodeType: "queue",
-          technologies: ["Kafka", "RabbitMQ", "Custom Priority Queue"],
+          technologies: tech("Kafka", "RabbitMQ", "Custom Priority Queue"),
         },
       },
       {
@@ -6049,7 +6094,7 @@ export const architectures: Architecture[] = [
           label: "Crawler Workers",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Python (Scrapy, BeautifulSoup)", "Go (Colly)"],
+          technologies: tech("Python (Scrapy, BeautifulSoup)", "Go (Colly)"),
         },
       },
       {
@@ -6060,7 +6105,7 @@ export const architectures: Architecture[] = [
           label: "DNS Resolver",
           icon: "compass",
           nodeType: "server",
-          technologies: ["CoreDNS", "BIND"],
+          technologies: tech("CoreDNS", "BIND"),
         },
       },
       {
@@ -6071,7 +6116,7 @@ export const architectures: Architecture[] = [
           label: "Robots.txt Parser",
           icon: "file-text",
           nodeType: "server",
-          technologies: ["Custom parser", "Cache (Redis)"],
+          technologies: tech("Custom parser", "Cache (Redis)"),
         },
       },
       {
@@ -6082,7 +6127,7 @@ export const architectures: Architecture[] = [
           label: "HTML Parser",
           icon: "code",
           nodeType: "server",
-          technologies: ["BeautifulSoup (Python)", "goquery (Go)"],
+          technologies: tech("BeautifulSoup (Python)", "goquery (Go)"),
         },
       },
       {
@@ -6093,7 +6138,7 @@ export const architectures: Architecture[] = [
           label: "URL Seen Filter",
           icon: "filter",
           nodeType: "cache",
-          technologies: ["Bloom Filter", "Cuckoo Filter", "Redis"],
+          technologies: tech("Bloom Filter", "Cuckoo Filter", "Redis"),
         },
       },
       {
@@ -6104,7 +6149,7 @@ export const architectures: Architecture[] = [
           label: "Content Store",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3", "HDFS", "Cassandra"],
+          technologies: tech("Amazon S3", "HDFS", "Cassandra"),
         },
       },
       {
@@ -6115,7 +6160,7 @@ export const architectures: Architecture[] = [
           label: "Link Graph DB",
           icon: "git-branch",
           nodeType: "database",
-          technologies: ["Neo4j", "Amazon Neptune"],
+          technologies: tech("Neo4j", "Amazon Neptune"),
         },
       },
     ],
@@ -6189,7 +6234,7 @@ export const architectures: Architecture[] = [
           label: "Shortening Service",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Prometheus Alertmanager", "PagerDuty"],
+          technologies: tech("Prometheus Alertmanager", "PagerDuty"),
         },
       },
       {
@@ -6210,7 +6255,7 @@ export const architectures: Architecture[] = [
           label: "Unique ID Generator",
           icon: "key",
           nodeType: "server",
-          technologies: ["Snowflake algorithm", "UUIDv4"],
+          technologies: tech("Snowflake algorithm", "UUIDv4"),
         },
       },
       {
@@ -6221,7 +6266,7 @@ export const architectures: Architecture[] = [
           label: "Key-Value Store",
           icon: "database",
           nodeType: "database",
-          technologies: ["Redis", "Cassandra", "Amazon DynamoDB"],
+          technologies: tech("Redis", "Cassandra", "Amazon DynamoDB"),
         },
       },
       {
@@ -6232,7 +6277,7 @@ export const architectures: Architecture[] = [
           label: "Cache (Redis)",
           icon: "zap",
           nodeType: "cache",
-          technologies: ["Redis", "Memcached"],
+          technologies: tech("Redis", "Memcached"),
         },
       },
     ],
@@ -6347,7 +6392,7 @@ export const architectures: Architecture[] = [
           label: "ID Generator Node 1",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Go", "Erlang"],
+          technologies: tech("Go", "Erlang"),
         },
       },
       {
@@ -6358,7 +6403,7 @@ export const architectures: Architecture[] = [
           label: "ID Generator Node 2",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Go", "Erlang"],
+          technologies: tech("Go", "Erlang"),
         },
       },
       {
@@ -6369,7 +6414,7 @@ export const architectures: Architecture[] = [
           label: "ZooKeeper (Worker ID)",
           icon: "key",
           nodeType: "database",
-          technologies: ["Apache ZooKeeper", "etcd"],
+          technologies: tech("Apache ZooKeeper", "etcd"),
         },
       },
       {
@@ -6380,7 +6425,7 @@ export const architectures: Architecture[] = [
           label: "NTP Service",
           icon: "clock",
           nodeType: "monitor",
-          technologies: ["NTP (Network Time Protocol)"],
+          technologies: tech("NTP (Network Time Protocol)"),
         },
       },
     ],
@@ -6443,7 +6488,7 @@ export const architectures: Architecture[] = [
           label: "Coordinator Node",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Any application node"],
+          technologies: tech("Any application node"),
         },
       },
       {
@@ -6454,7 +6499,7 @@ export const architectures: Architecture[] = [
           label: "Node 1 (Preference)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Cassandra", "DynamoDB", "Riak"],
+          technologies: tech("Cassandra", "DynamoDB", "Riak"),
         },
       },
       {
@@ -6465,7 +6510,7 @@ export const architectures: Architecture[] = [
           label: "Node 2 (Preference)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Cassandra", "DynamoDB", "Riak"],
+          technologies: tech("Cassandra", "DynamoDB", "Riak"),
         },
       },
       {
@@ -6476,7 +6521,7 @@ export const architectures: Architecture[] = [
           label: "Node 3 (Failing)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Cassandra", "DynamoDB", "Riak"],
+          technologies: tech("Cassandra", "DynamoDB", "Riak"),
         },
       },
       {
@@ -6487,7 +6532,7 @@ export const architectures: Architecture[] = [
           label: "Node 4 (Handoff)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Cassandra", "DynamoDB", "Riak"],
+          technologies: tech("Cassandra", "DynamoDB", "Riak"),
         },
       },
       {
@@ -6498,7 +6543,7 @@ export const architectures: Architecture[] = [
           label: "Gossip Protocol",
           icon: "message-circle",
           nodeType: "monitor",
-          technologies: ["Gossip protocol implementations"],
+          technologies: tech("Gossip protocol implementations"),
         },
       },
     ],
@@ -6576,7 +6621,11 @@ export const architectures: Architecture[] = [
           label: "Node A",
           icon: "database",
           nodeType: "database",
-          technologies: ["Memcached Server", "Redis Node", "Cassandra Node"],
+          technologies: tech(
+            "Memcached Server",
+            "Redis Node",
+            "Cassandra Node",
+          ),
         },
       },
       {
@@ -6587,7 +6636,11 @@ export const architectures: Architecture[] = [
           label: "Node B",
           icon: "database",
           nodeType: "database",
-          technologies: ["Memcached Server", "Redis Node", "Cassandra Node"],
+          technologies: tech(
+            "Memcached Server",
+            "Redis Node",
+            "Cassandra Node",
+          ),
         },
       },
       {
@@ -6598,7 +6651,11 @@ export const architectures: Architecture[] = [
           label: "Node C",
           icon: "database",
           nodeType: "database",
-          technologies: ["Memcached Server", "Redis Node", "Cassandra Node"],
+          technologies: tech(
+            "Memcached Server",
+            "Redis Node",
+            "Cassandra Node",
+          ),
         },
       },
       {
@@ -6609,7 +6666,11 @@ export const architectures: Architecture[] = [
           label: "Node D (New)",
           icon: "database",
           nodeType: "database",
-          technologies: ["Memcached Server", "Redis Node", "Cassandra Node"],
+          technologies: tech(
+            "Memcached Server",
+            "Redis Node",
+            "Cassandra Node",
+          ),
         },
       },
       {
@@ -6734,7 +6795,7 @@ export const architectures: Architecture[] = [
           label: "Rules DB",
           icon: "database",
           nodeType: "database",
-          technologies: ["PostgreSQL", "MongoDB", "etcd"],
+          technologies: tech("PostgreSQL", "MongoDB", "etcd"),
         },
       },
     ],
@@ -6821,7 +6882,7 @@ export const architectures: Architecture[] = [
           label: "Load Balancer",
           icon: "network",
           nodeType: "loadbalancer",
-          technologies: ["AWS NLB", "HAProxy"],
+          technologies: tech("AWS NLB", "HAProxy"),
         },
       },
       {
@@ -6832,7 +6893,12 @@ export const architectures: Architecture[] = [
           label: "WebSocket Server",
           icon: "message-circle",
           nodeType: "server",
-          technologies: ["Erlang/OTP", "Elixir (Phoenix)", "Go", "Socket.io"],
+          technologies: tech(
+            "Erlang/OTP",
+            "Elixir (Phoenix)",
+            "Go",
+            "Socket.io",
+          ),
         },
       },
       {
@@ -6843,7 +6909,7 @@ export const architectures: Architecture[] = [
           label: "Message Router",
           icon: "cpu",
           nodeType: "server",
-          technologies: ["Erlang/OTP", "Custom routing logic"],
+          technologies: tech("Erlang/OTP", "Custom routing logic"),
         },
       },
       {
@@ -6854,7 +6920,7 @@ export const architectures: Architecture[] = [
           label: "Presence Service",
           icon: "activity",
           nodeType: "server",
-          technologies: ["Redis", "Custom service"],
+          technologies: tech("Redis", "Custom service"),
         },
       },
       {
@@ -6865,7 +6931,7 @@ export const architectures: Architecture[] = [
           label: "Media Service",
           icon: "image",
           nodeType: "server",
-          technologies: ["Go", "Node.js"],
+          technologies: tech("Go", "Node.js"),
         },
       },
       {
@@ -6876,7 +6942,7 @@ export const architectures: Architecture[] = [
           label: "Media Object Storage",
           icon: "hard-drive",
           nodeType: "storage",
-          technologies: ["Amazon S3", "Google Cloud Storage"],
+          technologies: tech("Amazon S3", "Google Cloud Storage"),
         },
       },
       {
@@ -6887,7 +6953,7 @@ export const architectures: Architecture[] = [
           label: "Message Store (Offline)",
           icon: "database",
           nodeType: "database",
-          technologies: ["MySQL", "PostgreSQL"],
+          technologies: tech("MySQL", "PostgreSQL"),
         },
       },
       {
@@ -6898,7 +6964,7 @@ export const architectures: Architecture[] = [
           label: "Push Notification Service",
           icon: "bell",
           nodeType: "server",
-          technologies: ["APNS", "FCM"],
+          technologies: tech("APNS", "FCM"),
         },
       },
     ],
@@ -6967,12 +7033,12 @@ export const architectures: Architecture[] = [
           label: "Controller",
           icon: "cpu",
           nodeType: "server",
-          technologies: [
+          technologies: tech(
             "Ruby on Rails",
             "Django",
             "ASP.NET MVC",
             "Spring MVC",
-          ],
+          ),
         },
       },
       {
@@ -6983,7 +7049,7 @@ export const architectures: Architecture[] = [
           label: "View",
           icon: "layout",
           nodeType: "client",
-          technologies: [
+          technologies: tech(
             "HTML",
             "CSS",
             "JavaScript",
@@ -6991,7 +7057,7 @@ export const architectures: Architecture[] = [
             "Jinja (Python)",
             "Express EJS",
             "EXPRESS HBS",
-          ],
+          ),
         },
       },
       {
@@ -7002,7 +7068,7 @@ export const architectures: Architecture[] = [
           label: "Model",
           icon: "database",
           nodeType: "database",
-          technologies: [
+          technologies: tech(
             "ActiveRecord",
             "Django ORM",
             "Entity Framework",
@@ -7010,7 +7076,7 @@ export const architectures: Architecture[] = [
             "Prisma",
             "Sequelize",
             "TypeORM",
-          ],
+          ),
         },
       },
     ],
@@ -7090,7 +7156,7 @@ export const architectures: Architecture[] = [
           label: "Pipe",
           icon: "move-horizontal",
           nodeType: "queue",
-          technologies: ["Unix Pipe", "In-memory buffer", "Message Queue"],
+          technologies: tech("Unix Pipe", "In-memory buffer", "Message Queue"),
         },
       },
       {
@@ -7101,7 +7167,7 @@ export const architectures: Architecture[] = [
           label: "Filter 1",
           icon: "filter",
           nodeType: "server",
-          technologies: ["grep", "sed", "Custom function"],
+          technologies: tech("grep", "sed", "Custom function"),
         },
       },
       {
@@ -7112,7 +7178,7 @@ export const architectures: Architecture[] = [
           label: "Pipe",
           icon: "move-horizontal",
           nodeType: "queue",
-          technologies: ["Unix Pipe", "In-memory buffer", "Message Queue"],
+          technologies: tech("Unix Pipe", "In-memory buffer", "Message Queue"),
         },
       },
       {
@@ -7123,7 +7189,7 @@ export const architectures: Architecture[] = [
           label: "Filter 2",
           icon: "filter",
           nodeType: "server",
-          technologies: ["awk", "wc", "Custom function"],
+          technologies: tech("awk", "wc", "Custom function"),
         },
       },
       {
@@ -7134,7 +7200,7 @@ export const architectures: Architecture[] = [
           label: "Pipe",
           icon: "move-horizontal",
           nodeType: "queue",
-          technologies: ["Unix Pipe", "In-memory buffer", "Message Queue"],
+          technologies: tech("Unix Pipe", "In-memory buffer", "Message Queue"),
         },
       },
       {

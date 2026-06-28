@@ -12,8 +12,13 @@ import {
 } from "@/components/ui/command";
 import { Cpu } from "lucide-react";
 
+interface Technology {
+  name: string;
+  url: string;
+}
+
 interface TechnologyPopoverProps {
-  technologies: string[];
+  technologies: Technology[];
   children: React.ReactNode;
 }
 
@@ -32,11 +37,19 @@ export const TechnologyPopover: React.FC<TechnologyPopoverProps> = ({
         <Command>
           <CommandList>
             <CommandGroup heading="Example Technologies">
-              {technologies.map((tech) => (
-                <CommandItem key={tech} className="flex items-center gap-2">
-                  <Cpu className="h-4 w-4 text-muted-foreground" />
-                  <span>{tech}</span>
-                </CommandItem>
+              {technologies.map((tech: Technology, index: number) => (
+                <a
+                  key={index}
+                  href={tech.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-popover-foreground no-underline"
+                >
+                  <CommandItem className="flex cursor-pointer items-center gap-2">
+                    <Cpu className="h-4 w-4 text-muted-foreground" />
+                    <span>{tech?.name}</span>
+                  </CommandItem>
+                </a>
               ))}
             </CommandGroup>
           </CommandList>
