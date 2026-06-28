@@ -7,7 +7,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { CustomNode } from "@/components/CustomNode";
-import { type Architecture } from "@/data/architectures";
+import { type Architecture } from "@/data/types";
 import { useTheme } from "next-themes";
 
 interface DiagramCanvasProps {

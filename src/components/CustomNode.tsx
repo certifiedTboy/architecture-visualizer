@@ -1,6 +1,6 @@
 import { Handle, Position } from "reactflow";
 import * as LucideIcons from "lucide-react";
-import { type ArchitectureNode } from "@/data/architectures";
+import { type ArchitectureNode } from "@/data/types";
 import { TechnologyPopover } from "./TechnologyPopover";
 import { cn } from "@/lib/utils";
 

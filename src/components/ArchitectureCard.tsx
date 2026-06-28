@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "wouter";
-import { type Architecture } from "../data/architectures";
+import { type Architecture } from "../data/types";
 import {
   Card,
   CardHeader,
