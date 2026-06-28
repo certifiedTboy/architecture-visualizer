@@ -6832,7 +6832,7 @@ export const architectures: Architecture[] = [
           label: "WebSocket Server",
           icon: "message-circle",
           nodeType: "server",
-          technologies: ["Erlang/OTP", "Elixir (Phoenix)", "Go"],
+          technologies: ["Erlang/OTP", "Elixir (Phoenix)", "Go", "Socket.io"],
         },
       },
       {
