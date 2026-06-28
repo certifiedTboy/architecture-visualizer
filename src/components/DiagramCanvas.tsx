@@ -51,7 +51,7 @@ export const DiagramCanvas: React.FC<DiagramCanvasProps> = ({
         <Background color={theme === "dark" ? "#374151" : "#d1d5db"} gap={16} />
         <Controls />
         <MiniMap
-          nodeColor={(n) => {
+          nodeColor={(__: any) => {
             return theme === "dark" ? "#4b5563" : "#d1d5db";
           }}
           maskColor={
