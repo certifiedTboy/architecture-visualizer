@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams, Link } from "wouter";
 import { ArrowLeft, CheckCircle2, List, Target } from "lucide-react";
 import { architectures } from "../data/architectures";
@@ -7,7 +6,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 
-export const ArchitectureDetail: React.FC = () => {
+export const ArchitectureDetail = () => {
   const params = useParams<{ id: string }>();
   const architecture = architectures.find((a) => a.id === params.id);
 
