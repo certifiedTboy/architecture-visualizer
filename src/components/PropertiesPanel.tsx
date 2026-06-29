@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { type Node, useReactFlow, useOnSelectionChange } from "reactflow";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,12 +12,6 @@ export const PropertiesPanel = () => {
       setSelectedNode(nodes.length === 1 ? nodes[0] : null);
     },
   });
-
-  useEffect(() => {
-    if (selectedNode) {
-      // This effect can be used to sync panel state with node data if needed
-    }
-  }, [selectedNode]);
 
   if (!selectedNode) {
     return null;
