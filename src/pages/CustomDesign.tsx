@@ -2,7 +2,6 @@ import { useCallback, useRef, useState, type DragEvent } from "react";
 import { Link } from "wouter";
 import ReactFlow, {
   addEdge,
-  getConnectedEdges,
   useNodesState,
   useEdgesState,
   Controls,
@@ -46,7 +45,6 @@ const CustomCanvas = () => {
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
   const { getNodes } = useReactFlow();
-
   const onConnect = useCallback(
     (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
@@ -56,17 +54,6 @@ const CustomCanvas = () => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
-
-  const onNodesDelete = useCallback(
-    (deletedNodes: Node[]) => {
-      const connectedEdges = getConnectedEdges(deletedNodes, getNodes());
-      const edgeIdsToRemove = connectedEdges.map((edge) => edge.id);
-      setEdges((prevEdges) =>
-        prevEdges.filter((edge) => !edgeIdsToRemove.includes(edge.id)),
-      );
-    },
-    [getNodes, setEdges],
-  );
 
   const onDrop = useCallback(
     (event: DragEvent) => {
@@ -115,7 +102,6 @@ const CustomCanvas = () => {
         onDrop={onDrop}
         onDragOver={onDragOver}
         onInit={setReactFlowInstance}
-        onNodesDelete={onNodesDelete}
         deleteKeyCode={["Backspace", "Delete"]}
         nodeTypes={nodeTypes}
         fitView
