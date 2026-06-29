@@ -119,7 +119,7 @@ const CustomCanvas = () => {
 export const CustomDesign = () => {
   return (
     <div className="flex flex-col h-screen w-full bg-background">
-      <header className="flex items-center gap-4 p-4 border-b shrink-0">
+      <header className="flex items-center gap-4 p-4 border-b shrink-0 print:hidden">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground font-bold">
             AV
@@ -143,10 +143,15 @@ export const CustomDesign = () => {
         </div>
       </header>
       <div className="flex flex-1 overflow-hidden">
-        <CustomSidebar />
+        <div className="print:hidden">
+          <CustomSidebar />
+        </div>
+
         <ReactFlowProvider>
           <CustomCanvas />
-          <PropertiesPanel />
+          <div className="print:hidden">
+            <PropertiesPanel />
+          </div>
         </ReactFlowProvider>
       </div>
     </div>
