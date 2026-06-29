@@ -1,122 +1,41 @@
-import { useCallback, useRef, useState, type DragEvent } from "react";
+import { useCallback } from "react";
 import { Link } from "wouter";
-import ReactFlow, {
-  addEdge,
-  useNodesState,
-  useEdgesState,
-  Controls,
-  Background,
-  MiniMap,
-  MarkerType,
-  ReactFlowProvider,
-  type Connection,
-  type Edge,
-  type Node,
-  type ReactFlowInstance,
-} from "reactflow";
+import { toPng } from "html-to-image";
+import { ReactFlowProvider } from "reactflow";
 import "reactflow/dist/style.css";
-
-import { CustomNode } from "@/components/CustomNode";
 import { CustomSidebar } from "@/components/CustomSidebar";
 import { Button } from "@/components/ui/button";
-import { FileDown, Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { FileDown, FileImage, FileText, Trash2 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PropertiesPanel } from "@/components/PropertiesPanel";
-
-const initialNodes: Node[] = [
-  {
-    id: "1",
-    type: "custom",
-    data: { label: "Client", nodeType: "client", icon: "globe" },
-    position: { x: 250, y: 5 },
-  },
-];
-
-let id = 2;
-const getId = () => `dndnode_${id++}`;
-
-const nodeTypes = { custom: CustomNode };
-
-const CustomCanvas = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [reactFlowInstance, setReactFlowInstance] =
-    useState<ReactFlowInstance | null>(null);
-
-  const onConnect = useCallback(
-    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges],
-  );
-
-  const onDragOver = useCallback((event: DragEvent) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  }, []);
-
-  const onDrop = useCallback(
-    (event: DragEvent) => {
-      event.preventDefault();
-
-      if (!reactFlowWrapper.current || !reactFlowInstance) {
-        return;
-      }
-
-      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-      const type = event.dataTransfer.getData("application/reactflow");
-
-      if (typeof type === "undefined" || !type) {
-        return;
-      }
-
-      const position = reactFlowInstance.screenToFlowPosition({
-        x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top,
-      });
-
-      const newNode: Node = {
-        id: getId(),
-        type: "custom",
-        position,
-        data: {
-          label: `${type.charAt(0).toUpperCase() + type.slice(1)}`,
-          nodeType: type,
-          icon: type,
-        },
-      };
-
-      setNodes((nds) => nds.concat(newNode));
-    },
-    [reactFlowInstance, setNodes],
-  );
-
-  return (
-    <div className="flex-1 h-full" ref={reactFlowWrapper}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        onInit={setReactFlowInstance}
-        deleteKeyCode={["Backspace", "Delete"]}
-        nodeTypes={nodeTypes}
-        fitView
-        defaultEdgeOptions={{
-          markerEnd: { type: MarkerType.ArrowClosed },
-        }}
-      >
-        <Controls />
-        <MiniMap />
-        <Background gap={16} />
-      </ReactFlow>
-    </div>
-  );
-};
+import { CustomCanvas } from "@/components/CustomCanva";
 
 export const CustomDesign = () => {
+  const onExportImage = useCallback(() => {
+    const wrapper = document.getElementById("reactflow-wrapper");
+    if (!wrapper) return;
+
+    toPng(wrapper, {
+      backgroundColor: "transparent",
+      style: { background: "transparent" },
+    })
+      .then((dataUrl) => {
+        const a = document.createElement("a");
+        a.setAttribute("download", "architecture.png");
+        a.setAttribute("href", dataUrl);
+        a.click();
+      })
+      .catch(() => {
+        // ignore errors
+      });
+  }, []);
+
   return (
     <div className="flex flex-col h-screen w-full bg-background">
       <header className="flex items-center gap-4 p-4 border-b shrink-0 print:hidden">
@@ -135,10 +54,22 @@ export const CustomDesign = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => window.print()}>
-            <FileDown className="h-4 w-4 mr-2" />
-            Export as PDF
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <FileDown className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => window.print()}>
+                <FileText className="h-4 w-4 mr-2" /> Export as PDF
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onExportImage}>
+                <FileImage className="h-4 w-4 mr-2" /> Export as Image
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <ThemeToggle />
         </div>
       </header>

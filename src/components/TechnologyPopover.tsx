@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Popover,
   PopoverContent,
@@ -22,10 +21,10 @@ interface TechnologyPopoverProps {
   children: React.ReactNode;
 }
 
-export const TechnologyPopover: React.FC<TechnologyPopoverProps> = ({
+export const TechnologyPopover = ({
   technologies,
   children,
-}) => {
+}: TechnologyPopoverProps) => {
   if (!technologies || technologies.length === 0) {
     return <>{children}</>;
   }
