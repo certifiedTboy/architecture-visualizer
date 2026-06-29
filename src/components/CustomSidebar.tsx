@@ -41,7 +41,7 @@ const DraggableNode = ({ nodeType, label, icon: Icon }: DraggableNodeProps) => {
 
 export const CustomSidebar = () => {
   return (
-    <aside className="w-64 h-screen border-r bg-background flex flex-col">
+    <aside className="w-64 h-screen border-r bg-background flex flex-col pb-16">
       <h2 className="text-xl font-bold p-4 pb-0">Nodes</h2>
       <div className="flex-1 overflow-y-auto p-4 grid grid-cols-2 gap-4 scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background">
         <DraggableNode nodeType="server" label="Server" icon={Server} />

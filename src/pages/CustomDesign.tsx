@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState, type DragEvent } from "react";
+import { Link } from "wouter";
 import ReactFlow, {
   addEdge,
   getConnectedEdges,
@@ -19,6 +20,9 @@ import "reactflow/dist/style.css";
 
 import { CustomNode } from "@/components/CustomNode";
 import { CustomSidebar } from "@/components/CustomSidebar";
+import { Button } from "@/components/ui/button";
+import { FileDown, Trash2 } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { PropertiesPanel } from "@/components/PropertiesPanel";
 
 const initialNodes: Node[] = [
@@ -129,12 +133,37 @@ const CustomCanvas = () => {
 
 export const CustomDesign = () => {
   return (
-    <div className="flex h-screen w-full">
-      <CustomSidebar />
-      <ReactFlowProvider>
-        <CustomCanvas />
-        <PropertiesPanel />
-      </ReactFlowProvider>
+    <div className="flex flex-col h-screen w-full bg-background">
+      <header className="flex items-center gap-4 p-4 border-b shrink-0">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground font-bold">
+            AV
+          </div>
+          <span className="font-bold text-lg tracking-tight">
+            Architecture Visualizer
+          </span>
+        </Link>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-sm text-muted-foreground flex items-center gap-2 bg-muted px-3 py-1.5 rounded-md">
+            <Trash2 className="h-4 w-4" />
+            <span>Select a node and press Delete or Backspace to delete</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => window.print()}>
+            <FileDown className="h-4 w-4 mr-2" />
+            Export as PDF
+          </Button>
+          <ThemeToggle />
+        </div>
+      </header>
+      <div className="flex flex-1 overflow-hidden">
+        <CustomSidebar />
+        <ReactFlowProvider>
+          <CustomCanvas />
+          <PropertiesPanel />
+        </ReactFlowProvider>
+      </div>
     </div>
   );
 };
