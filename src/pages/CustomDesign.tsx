@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { Link } from "wouter";
 import { toPng } from "html-to-image";
+import { saveAs } from "file-saver";
 import { ReactFlowProvider } from "reactflow";
 import "reactflow/dist/style.css";
 import { CustomSidebar } from "@/components/CustomSidebar";
@@ -26,10 +27,9 @@ export const CustomDesign = () => {
       style: { background: "transparent" },
     })
       .then((dataUrl) => {
-        const a = document.createElement("a");
-        a.setAttribute("download", "architecture.png");
-        a.setAttribute("href", dataUrl);
-        a.click();
+        const extName = dataUrl.split(":")[1]?.split(";")[0]?.split("/")[1];
+
+        saveAs(dataUrl, `architecture.${extName || "png"}`);
       })
       .catch(() => {
         // ignore errors
