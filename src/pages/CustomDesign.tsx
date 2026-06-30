@@ -80,9 +80,7 @@ export const CustomDesign = () => {
 
         <ReactFlowProvider>
           <CustomCanvas />
-          <div className="print:hidden">
-            <PropertiesPanel />
-          </div>
+          <PropertiesPanel />
         </ReactFlowProvider>
       </div>
     </div>

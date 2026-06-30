@@ -104,8 +104,10 @@ export const CustomCanvas = () => {
           markerEnd: { type: MarkerType.ArrowClosed },
         }}
       >
-        <Controls />
-        <MiniMap />
+        <div className="print:hidden">
+          <Controls />
+          <MiniMap />
+        </div>
         <Background gap={16} />
       </ReactFlow>
     </div>
