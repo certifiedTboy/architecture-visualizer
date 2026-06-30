@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { type Node, useReactFlow, useOnSelectionChange } from "reactflow";
+import { Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,6 +80,11 @@ export const PropertiesPanel = () => {
             );
           }}
         />
+      </div>
+
+      <div className="flex text-[10px] items-center gap-2 text-muted-foreground">
+        <Trash2 className="h-4 w-4" />
+        <span className="text-[12px]">Press Delete or Backspace to delete</span>
       </div>
     </motion.aside>
   );

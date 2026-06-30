@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FileDown, FileImage, FileText, Trash2 } from "lucide-react";
+import { FileDown, FileImage, FileText } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PropertiesPanel } from "@/components/PropertiesPanel";
 import { CustomCanvas } from "@/components/CustomCanva";
@@ -38,7 +38,7 @@ export const CustomDesign = () => {
 
   return (
     <div className="flex flex-col h-screen w-full bg-background">
-      <header className="flex items-center gap-4 p-4 border-b shrink-0 print:hidden">
+      <header className="flex items-center justify-between gap-4 p-4 border-b shrink-0 print:hidden">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground font-bold">
             AV
@@ -47,12 +47,7 @@ export const CustomDesign = () => {
             Architecture Visualizer
           </span>
         </Link>
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-sm text-muted-foreground flex items-center gap-2 bg-muted px-3 py-1.5 rounded-md">
-            <Trash2 className="h-4 w-4" />
-            <span>Select a node and press Delete or Backspace to delete</span>
-          </div>
-        </div>
+
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
