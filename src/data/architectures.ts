@@ -817,10 +817,130 @@ export const architectures: Architecture[] = [
       },
     ],
   },
+
+  {
+    id: "nodejs-cluster",
+    title: "Node.js Cluster Module",
+    category: "Pattern",
+    shortDescription: "Scaling Node.js applications with multiple processes.",
+    description:
+      "The Node.js cluster module allows you to create child processes (workers) that run simultaneously and share the same server port. This enables a Node.js application to take advantage of multi-core systems and handle a larger load by distributing incoming connections across the worker processes.",
+    keyComponents: [
+      "Primary Process",
+      "Worker Processes",
+      "Shared Server Port",
+      "Forking",
+    ],
+    benefits: [
+      "Improved performance on multi-core systems",
+      "Increased application availability and reliability",
+      "Load balancing over multiple processes without an external load balancer",
+    ],
+    useCases: [
+      "CPU-intensive applications",
+      "High-traffic web servers",
+      "Any Node.js application that needs to scale vertically on a single machine",
+    ],
+    nodes: [
+      {
+        id: "requests",
+        type: "custom",
+        position: { x: 50, y: 300 },
+        data: {
+          label: "Incoming Requests",
+          icon: "arrow-down-up",
+          nodeType: "client",
+        },
+      },
+      {
+        id: "primary",
+        type: "custom",
+        position: { x: 250, y: 300 },
+        data: {
+          label: "Primary Process",
+          icon: "cpu",
+          nodeType: "server",
+          technologies: tech("Node.js", "cluster"),
+        },
+      },
+      {
+        id: "worker1",
+        type: "custom",
+        position: { x: 500, y: 150 },
+        data: {
+          label: "Worker 1",
+          icon: "server",
+          nodeType: "server",
+          technologies: tech("Node.js"),
+        },
+      },
+      {
+        id: "worker2",
+        type: "custom",
+        position: { x: 500, y: 300 },
+        data: {
+          label: "Worker 2",
+          icon: "server",
+          nodeType: "server",
+          technologies: tech("Node.js"),
+        },
+      },
+      {
+        id: "workerN",
+        type: "custom",
+        position: { x: 500, y: 450 },
+        data: {
+          label: "Worker N",
+          icon: "server",
+          nodeType: "server",
+          technologies: tech("Node.js"),
+        },
+      },
+
+      {
+        id: "db",
+        type: "custom",
+        position: { x: 750, y: 300 },
+        data: {
+          label: "Centralized Database",
+          icon: "database",
+          nodeType: "database",
+          technologies: tech("PostgreSQL", "MySQL", "MongoDB"),
+        },
+      },
+    ],
+    edges: [
+      {
+        id: "e1",
+        source: "primary",
+        target: "worker1",
+        label: "fork()",
+        animated: true,
+      },
+      {
+        id: "e2",
+        source: "primary",
+        target: "worker2",
+        label: "fork()",
+        animated: true,
+      },
+      {
+        id: "e3",
+        source: "primary",
+        target: "workerN",
+        label: "fork()",
+        animated: true,
+      },
+      { id: "e4", source: "requests", target: "primary", animated: true },
+      { id: "e5", source: "worker1", target: "db", animated: true },
+      { id: "e6", source: "worker2", target: "db", animated: true },
+      { id: "e7", source: "workerN", target: "db", animated: true },
+    ],
+  },
   {
     id: "monolithic",
     title: "Monolithic Architecture",
-    category: "Pattern",
+    category: "Web",
     shortDescription:
       "A unified model where all components are interconnected.",
     description:
