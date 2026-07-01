@@ -12,6 +12,8 @@ import NotFound from "./pages/not-found";
 import { Home } from "./pages/Home";
 import { CustomDesign } from "./pages/CustomDesign";
 import { ArchitectureDetail } from "./pages/ArchitectureDetail";
+import { Layout } from "./components/Layout";
+import { useArchitectures } from "./hooks/use-architectures";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,11 @@ function App() {
   const [location] = useLocation();
   const isCustomDesignPage = location === "/custom-design";
 
+  const { filteredArchitectures } = useArchitectures(
+    searchQuery,
+    selectedCategory,
+  );
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -29,37 +36,35 @@ function App() {
           {isCustomDesignPage ? (
             <Route path="/custom-design" component={CustomDesign} />
           ) : (
-            <div className="flex h-screen bg-background text-foreground overflow-hidden">
-              <main className="flex-1 h-screen overflow-y-auto relative scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background">
-                <Switch>
-                  <Route path="/">
-                    <Home
-                      searchQuery={searchQuery}
-                      setSearchQuery={setSearchQuery}
-                      selectedCategory={selectedCategory}
-                      setSelectedCategory={setSelectedCategory}
-                    />
-                  </Route>
-                  <Route path="/architecture/:id">
-                    <ArchitectureDetail
-                      searchQuery={searchQuery}
-                      setSearchQuery={setSearchQuery}
-                      selectedCategory={selectedCategory}
-                      setSelectedCategory={setSelectedCategory}
-                    />
-                  </Route>
-
-                  <Route component={NotFound} />
-                </Switch>
-              </main>
-              <div className="fixed bottom-8 right-8 z-10">
-                <Link
-                  to="/custom-design"
-                  className="cursor-pointer rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-semibold p-4 shadow-lg hover:bg-primary/90"
-                >
-                  Create Custom Design
-                </Link>
-              </div>
+            <Layout
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            >
+              <Switch>
+                <Route path="/">
+                  <Home
+                    searchQuery={searchQuery}
+                    selectedCategory={selectedCategory}
+                    filteredArchitectures={filteredArchitectures}
+                  />
+                </Route>
+                <Route path="/architecture/:id">
+                  {(params) => <ArchitectureDetail id={params.id} />}
+                </Route>
+                <Route component={NotFound} />
+              </Switch>
+            </Layout>
+          )}
+          {!isCustomDesignPage && (
+            <div className="fixed bottom-8 right-8 z-10">
+              <Link
+                to="/custom-design"
+                className="cursor-pointer rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-semibold p-4 shadow-lg hover:bg-primary/90"
+              >
+                Create Custom Design
+              </Link>
             </div>
           )}
         </WouterRouter>
