@@ -4,16 +4,19 @@ interface DraggableNodeProps {
   nodeType: string;
   label: string;
   icon: LucideIcon;
+  onDragStart?: () => void;
 }
 
 export const DraggableNode = ({
   nodeType,
   label,
   icon: Icon,
+  onDragStart: onDragStartProp,
 }: DraggableNodeProps) => {
   const onDragStart = (event: React.DragEvent, type: string) => {
     event.dataTransfer.setData("application/reactflow", type);
     event.dataTransfer.effectAllowed = "move";
+    onDragStartProp?.();
   };
 
   return (

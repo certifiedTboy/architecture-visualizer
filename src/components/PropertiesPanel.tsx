@@ -38,8 +38,8 @@ export const PropertiesPanel = () => {
       ref={dragConstraintsRef}
       drag
       dragMomentum={false}
-      dragConstraints={dragConstraintsRef}
-      className="absolute top-4 right-4 z-10 w-80 bg-background p-4 rounded-lg border shadow-lg flex flex-col gap-4"
+      dragConstraints={{ top: 16, right: 16, bottom: 16, left: 16 }}
+      className="absolute top-4 right-4 z-10 w-full max-w-sm md:w-80 bg-background p-4 rounded-lg border shadow-lg flex flex-col gap-4"
     >
       <h2 className="text-xl font-bold cursor-grab active:cursor-grabbing">
         Properties
