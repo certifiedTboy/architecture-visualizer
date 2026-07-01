@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useParams, Link } from "wouter";
 import { CheckCircle2, List, PanelLeft, Target } from "lucide-react";
 import { architectures } from "../data/architectures";
