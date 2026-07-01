@@ -13,7 +13,6 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Home } from "./pages/Home";
 import { CustomDesign } from "./pages/CustomDesign";
 import { ArchitectureDetail } from "./pages/ArchitectureDetail";
-import { AppLayout } from "@/components/AppLayout";
 
 const queryClient = new QueryClient();
 
@@ -29,45 +28,40 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           {isCustomDesignPage ? (
-            <CustomDesign />
+            <Route path="/custom-design" component={CustomDesign} />
           ) : (
-            <AppLayout
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-            >
-              <div className="flex h-screen bg-background text-foreground overflow-hidden">
-                <main className="flex-1 h-screen overflow-y-auto relative scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background">
-                  <div className="fixed right-0 mr-12.5 mt-12.5">
-                    <ThemeToggle />
-                  </div>
-                  <Switch>
-                    <Route path="/">
-                      <Home
-                        searchQuery={searchQuery}
-                        selectedCategory={selectedCategory}
-                      />
-                    </Route>
-                    <Route
-                      path="/architecture/:id"
-                      component={ArchitectureDetail}
+            <div className="flex h-screen bg-background text-foreground overflow-hidden">
+              <main className="flex-1 h-screen overflow-y-auto relative scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background">
+                <Switch>
+                  <Route path="/">
+                    <Home
+                      searchQuery={searchQuery}
+                      setSearchQuery={setSearchQuery}
+                      selectedCategory={selectedCategory}
+                      setSelectedCategory={setSelectedCategory}
                     />
+                  </Route>
+                  <Route path="/architecture/:id">
+                    <ArchitectureDetail
+                      searchQuery={searchQuery}
+                      setSearchQuery={setSearchQuery}
+                      selectedCategory={selectedCategory}
+                      setSelectedCategory={setSelectedCategory}
+                    />
+                  </Route>
 
-                    <Route path="/custom-design" component={CustomDesign} />
-                    <Route component={NotFound} />
-                  </Switch>
-                </main>
-                <div className="fixed bottom-8 right-8">
-                  <Link
-                    to="/custom-design"
-                    className="cursor-pointer rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-semibold p-4"
-                  >
-                    Create Custom Design
-                  </Link>
-                </div>
+                  <Route component={NotFound} />
+                </Switch>
+              </main>
+              <div className="fixed bottom-8 right-8 z-10">
+                <Link
+                  to="/custom-design"
+                  className="cursor-pointer rounded-xl bg-primary flex items-center justify-center text-primary-foreground font-semibold p-4 shadow-lg hover:bg-primary/90"
+                >
+                  Create Custom Design
+                </Link>
               </div>
-            </AppLayout>
+            </div>
           )}
         </WouterRouter>
       </ThemeProvider>
