@@ -1,18 +1,11 @@
-import { useState } from "react";
 import { Link } from "wouter";
 import { PanelLeft } from "lucide-react";
-import { architectures } from "../data/architectures";
 import { ArchitectureCard } from "../components/ArchitectureCard";
 import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useArchitectures } from "@/hooks/use-architectures";
 
 interface HomeProps {
   searchQuery: string;
@@ -21,17 +14,16 @@ interface HomeProps {
   setSelectedCategory: (val: string | null) => void;
 }
 
-export const Home = ({ searchQuery, selectedCategory }: HomeProps) => {
-  const filteredArchitectures = architectures.filter((a) => {
-    const matchesSearch =
-      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory
-      ? a.category === selectedCategory
-      : true;
-    return matchesSearch && matchesCategory;
-  });
-
+export const Home = ({
+  searchQuery,
+  setSearchQuery,
+  selectedCategory,
+  setSelectedCategory,
+}: HomeProps) => {
+  const { filteredArchitectures } = useArchitectures(
+    searchQuery,
+    selectedCategory,
+  );
   return (
     <div className="flex flex-col h-screen w-full bg-background">
       <header className="flex items-center justify-between gap-2 md:gap-4 p-2 md:p-4 border-b shrink-0 print:hidden">
@@ -47,9 +39,9 @@ export const Home = ({ searchQuery, selectedCategory }: HomeProps) => {
               <Sidebar
                 isMobile
                 searchQuery={searchQuery}
-                setSearchQuery={() => {}}
+                setSearchQuery={setSearchQuery}
                 selectedCategory={selectedCategory}
-                setSelectedCategory={() => {}}
+                setSelectedCategory={setSelectedCategory}
               />
             </SheetContent>
           </Sheet>
@@ -69,9 +61,9 @@ export const Home = ({ searchQuery, selectedCategory }: HomeProps) => {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
           searchQuery={searchQuery}
-          setSearchQuery={() => {}}
+          setSearchQuery={setSearchQuery}
           selectedCategory={selectedCategory}
-          setSelectedCategory={() => {}}
+          setSelectedCategory={setSelectedCategory}
         />
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 md:p-8 max-w-7xl mx-auto">

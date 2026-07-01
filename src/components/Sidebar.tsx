@@ -1,9 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
 import { Search } from "lucide-react";
-import { architectures } from "../data/architectures";
 import { Input } from "./ui/input";
 import { Badge } from "./ui/badge";
+import { useArchitectures } from "@/hooks/use-architectures";
 
 interface SidebarProps {
   searchQuery: string;
@@ -22,17 +22,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const [location] = useLocation();
 
-  const categories = Array.from(new Set(architectures.map((a) => a.category)));
-
-  const filteredArchitectures = architectures.filter((a) => {
-    const matchesSearch =
-      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory
-      ? a.category === selectedCategory
-      : true;
-    return matchesSearch && matchesCategory;
-  });
+  const { filteredArchitectures, categories } = useArchitectures(
+    searchQuery,
+    selectedCategory,
+  );
 
   return (
     <aside
@@ -41,14 +34,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       }`}
     >
       <div className="p-6 border-b flex-shrink-0 ">
-        <Link href="/" className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground font-bold">
-            AV
-          </div>
-          <span className="font-bold text-lg tracking-tight">
-            Architecture Visualizer
-          </span>
-        </Link>
+        {isMobile && (
+          <Link href="/" className="flex items-center gap-2 mb-6">
+            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-primary-foreground font-bold">
+              AV
+            </div>
+            <span className="font-bold text-lg tracking-tight">
+              Architecture Visualizer
+            </span>
+          </Link>
+        )}
 
         <div className="relative mb-4">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
