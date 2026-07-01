@@ -9,7 +9,6 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/components/theme-provider";
 import NotFound from "./pages/not-found";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Home } from "./pages/Home";
 import { CustomDesign } from "./pages/CustomDesign";
 import { ArchitectureDetail } from "./pages/ArchitectureDetail";
